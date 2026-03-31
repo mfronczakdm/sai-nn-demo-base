@@ -43,15 +43,15 @@ export const Default = (props: PageHeaderSTProps) => {
         />
       </div>
         <div className="relative lg:container w-full lg:flex mx-auto z-20" ref={containerRef}>
-        <div className="flex flex-col justify-center mt-10 lg:mt-0 lg:w-2/3 lg:min-h-[50rem] px-4 py-8 lg:p-8 backdrop-blur-[20px] bg-[linear-gradient(136deg,_rgba(255,255,255,0.21)_2.61%,_rgba(255,255,255,0.42)_73.95%)]">
+        <div className="flex flex-col justify-center mt-6 lg:mt-0 lg:w-2/3 lg:min-h-[34rem] px-4 py-6 lg:p-6 backdrop-blur-[20px] bg-[linear-gradient(136deg,_rgba(255,255,255,0.21)_2.61%,_rgba(255,255,255,0.42)_73.95%)]">
           <div className="lg:max-w-3xl">
-            <h1 className="text-primary text-xl lg:text-3xl pb-4 uppercase">
+            <h1 className="text-primary text-xl lg:text-3xl pb-3 uppercase">
               <ContentSdkText field={props?.fields?.Eyebrow} />
             </h1>
-            <h1 className="text-4xl lg:text-7xl uppercase">
+            <h1 className="text-4xl lg:text-6xl uppercase">
               <ContentSdkText field={props?.fields?.Title} />
             </h1>
-            <div className="mt-8">
+            <div className="mt-6">
               <ContentSdkLink
                 field={props?.fields?.Link1}
                 prefetch={false}
@@ -75,7 +75,7 @@ export const Default = (props: PageHeaderSTProps) => {
             height={1080}
             priority={true}
             fetchPriority="high"
-            className="aspect-7/4 lg:aspect-auto w-full h-full object-cover"
+            className="aspect-[2/1] lg:aspect-auto w-full h-full object-cover"
           />
         </div>
       </div>
@@ -105,15 +105,15 @@ export const Right = (props: PageHeaderSTProps) => {
         className="relative lg:container w-full lg:flex lg:flex-row-reverse mx-auto z-20"
         ref={containerRef}
       >
-        <div className="flex flex-col justify-center mt-10 lg:mt-0 lg:w-2/3 lg:min-h-[50rem] px-4 py-8 lg:p-8 backdrop-blur-[20px] bg-[linear-gradient(136deg,_rgba(255,255,255,0.21)_2.61%,_rgba(255,255,255,0.42)_73.95%)]">
+        <div className="flex flex-col justify-center mt-6 lg:mt-0 lg:w-2/3 lg:min-h-[34rem] px-4 py-6 lg:p-6 backdrop-blur-[20px] bg-[linear-gradient(136deg,_rgba(255,255,255,0.21)_2.61%,_rgba(255,255,255,0.42)_73.95%)]">
           <div className="lg:max-w-3xl lg:ml-auto text-right">
-            <h1 className="text-primary text-xl lg:text-3xl pb-4 uppercase">
+            <h1 className="text-primary text-xl lg:text-3xl pb-3 uppercase">
               <ContentSdkText field={props?.fields?.Eyebrow} />
             </h1>
-            <h1 className="text-4xl lg:text-7xl uppercase">
+            <h1 className="text-4xl lg:text-6xl uppercase">
               <ContentSdkText field={props?.fields?.Title} />
             </h1>
-            <div className="mt-8">
+            <div className="mt-6">
               <ContentSdkLink
                 field={props?.fields?.Link1}
                 prefetch={false}
@@ -135,7 +135,7 @@ export const Right = (props: PageHeaderSTProps) => {
             field={props?.fields?.Image1}
             width={1920}
             height={1080}
-            className="aspect-7/4 lg:aspect-auto w-full h-full object-cover"
+            className="aspect-[2/1] lg:aspect-auto w-full h-full object-cover"
           />
         </div>
       </div>
@@ -162,15 +162,15 @@ export const Centered = (props: PageHeaderSTProps) => {
         />
       </div>
       <div className="relative lg:container w-full lg:flex mx-auto z-20" ref={containerRef}>
-        <div className="lg:relative lg:left-1/6 flex flex-col justify-center mt-10 lg:mt-0 lg:w-2/3 lg:min-h-[50rem] px-4 py-8 lg:p-8 backdrop-blur-[20px] bg-[linear-gradient(136deg,_rgba(255,255,255,0.21)_2.61%,_rgba(255,255,255,0.42)_73.95%)]">
+        <div className="lg:relative lg:left-1/6 flex flex-col justify-center mt-6 lg:mt-0 lg:w-2/3 lg:min-h-[34rem] px-4 py-6 lg:p-6 backdrop-blur-[20px] bg-[linear-gradient(136deg,_rgba(255,255,255,0.21)_2.61%,_rgba(255,255,255,0.42)_73.95%)]">
           <div className="lg:max-w-3xl lg:mx-auto text-center">
-            <h1 className="text-primary text-xl lg:text-3xl pb-4 uppercase">
+            <h1 className="text-primary text-xl lg:text-3xl pb-3 uppercase">
               <ContentSdkText field={props?.fields?.Eyebrow} />
             </h1>
-            <h1 className="text-4xl lg:text-7xl uppercase">
+            <h1 className="text-4xl lg:text-6xl uppercase">
               <ContentSdkText field={props?.fields?.Title} />
             </h1>
-            <div className="mt-8">
+            <div className="mt-6">
               <ContentSdkLink
                 field={props?.fields?.Link1}
                 prefetch={false}
@@ -192,7 +192,7 @@ export const Centered = (props: PageHeaderSTProps) => {
             field={props?.fields?.Image1}
             width={1920}
             height={1080}
-            className="aspect-7/4 lg:aspect-auto w-full h-full object-cover"
+            className="aspect-[2/1] lg:aspect-auto w-full h-full object-cover"
           />
         </div>
       </div>
@@ -207,15 +207,15 @@ export const SplitScreen = (props: PageHeaderSTProps) => {
       className={`relative bg-primary border-8 lg:border-16 border-background ${props?.params?.styles || ''}`}
       data-class-change
     >
-      <div className="flex flex-col lg:flex-row lg:min-h-[50rem]">
-        <div className="p-8 lg:basis-full lg:self-center lg:p-14">
-          <h1 className="text-xl lg:text-3xl pb-4 uppercase">
+      <div className="flex flex-col lg:flex-row lg:min-h-[34rem]">
+        <div className="p-6 lg:basis-full lg:self-center lg:p-10">
+          <h1 className="text-xl lg:text-3xl pb-3 uppercase">
             <ContentSdkText field={props?.fields?.Eyebrow} />
           </h1>
           <h1 className="text-4xl lg:text-6xl uppercase">
             <ContentSdkText field={props?.fields?.Title} />
           </h1>
-          <div className="mt-8">
+          <div className="mt-6">
             <ContentSdkLink
               field={props?.fields?.Link1}
               prefetch={false}
@@ -228,7 +228,7 @@ export const SplitScreen = (props: PageHeaderSTProps) => {
             />
           </div>
         </div>
-        <div className="relative aspect-3/2 lg:basis-full lg:aspect-auto">
+        <div className="relative aspect-[2/1] lg:basis-full lg:aspect-auto">
           <ContentSdkImage
             field={props?.fields?.Image1}
             width={1920}
@@ -238,7 +238,7 @@ export const SplitScreen = (props: PageHeaderSTProps) => {
             className="absolute inset-0 w-full h-full object-cover"
           />
           <div className="relative h-full backdrop-blur-[20px] bg-[linear-gradient(136deg,_rgba(255,255,255,0.21)_2.61%,_rgba(255,255,255,0.42)_73.95%)] z-20">
-            <div className="absolute  inset-8 lg:inset-14">
+            <div className="absolute inset-6 lg:inset-10">
               <ContentSdkImage
                 field={props?.fields?.Image1}
                 width={1920}
@@ -257,18 +257,18 @@ export const Stacked = (props: PageHeaderSTProps) => {
 
   return (
     <section
-      className={`relative flex flex-col bg-primary lg:flex-row lg:items-center lg:min-h-[50rem] lg:bg-transparent ${props?.params?.styles || ''}`}
+      className={`relative flex flex-col bg-primary lg:flex-row lg:items-center lg:min-h-[34rem] lg:bg-transparent ${props?.params?.styles || ''}`}
       data-class-change
     >
       <div className="container px-4 mx-auto">
-        <div className="relative lg:w-1/2 px-6 py-12 bg-primary z-20">
-          <h1 className="text-xl lg:text-3xl pb-4 uppercase">
+        <div className="relative lg:w-1/2 px-6 py-8 bg-primary z-20">
+          <h1 className="text-xl lg:text-3xl pb-3 uppercase">
             <ContentSdkText field={props?.fields?.Eyebrow} />
           </h1>
           <h1 className="text-4xl lg:text-6xl uppercase">
             <ContentSdkText field={props?.fields?.Title} />
           </h1>
-          <div className="mt-8">
+          <div className="mt-6">
             <ContentSdkLink
               field={props?.fields?.Link1}
               prefetch={false}
@@ -282,7 +282,7 @@ export const Stacked = (props: PageHeaderSTProps) => {
           </div>
         </div>
       </div>
-      <div className="relative aspect-3/2 lg:absolute lg:aspect-auto inset-0 flex z-10">
+      <div className="relative aspect-[2/1] lg:absolute lg:aspect-auto inset-0 flex z-10">
         <div className="relative w-1/3">
           <ContentSdkImage
             field={props?.fields?.Image2}

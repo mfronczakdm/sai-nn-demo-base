@@ -45,6 +45,9 @@
   --color-secondary: #f5f5f5;
   --color-secondary-foreground: #525252;
   --color-secondary-hover: #f5f5f5b3;
+  /* Footer / dark band (Paylocity-style slate) */
+  --color-footer: #323e48;
+  --color-footer-foreground: #f0f4f8;
   --color-muted: #f5f5f5;
   --color-muted-foreground: #a3a3a3;
   --color-accent: #fd6311;

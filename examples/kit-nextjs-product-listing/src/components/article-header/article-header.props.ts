@@ -25,8 +25,9 @@ export type AuthorItemFields = {
   jobTitle: Field<string>;
 };
 
+/** GraphQL often returns `{ jsonValue: ImageField }`; flat `ImageField` is also supported. */
 interface ArticleHeaderFields {
-  imageRequired?: ImageField;
+  imageRequired?: ImageField | { jsonValue?: ImageField };
   eyebrowOptional?: Field<string>;
   pageDisplayDate?: Field<string>;
   pageAuthor?: Field<string>;

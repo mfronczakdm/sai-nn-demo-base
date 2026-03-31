@@ -5,7 +5,7 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Facebook, Linkedin, Twitter, Link, Check, Mail } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Text } from '@sitecore-content-sdk/nextjs';
+import { Text, type ImageField } from '@sitecore-content-sdk/nextjs';
 import { NoDataFallback } from '@/utils/NoDataFallback';
 import type { ArticleHeaderProps } from './article-header.props';
 import { Badge } from '@/components/ui/badge';
@@ -17,8 +17,19 @@ import { Toaster } from '@/components/ui/toaster';
 import { generateArticleSchema } from '@/lib/structured-data/schema';
 import { StructuredData } from '@/components/structured-data/StructuredData';
 
+function resolveImageField(
+  field: ArticleHeaderProps['fields']['imageRequired'],
+): ImageField | undefined {
+  if (!field) return undefined;
+  if (typeof field === 'object' && field !== null && 'jsonValue' in field && field.jsonValue) {
+    return field.jsonValue as ImageField;
+  }
+  return field as ImageField;
+}
+
 export const Default: React.FC<ArticleHeaderProps> = ({ fields, externalFields }) => {
-  const { imageRequired, eyebrowOptional } = fields;
+  const { imageRequired: imageRequiredRaw, eyebrowOptional } = fields;
+  const imageRequired = resolveImageField(imageRequiredRaw);
   const { pageHeaderTitle, pageReadTime, pageDisplayDate, pageAuthor } = externalFields || {};
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const headerRef = useRef<HTMLDivElement>(null);

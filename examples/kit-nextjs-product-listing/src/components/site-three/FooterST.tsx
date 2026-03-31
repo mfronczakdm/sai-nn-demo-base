@@ -32,7 +32,7 @@ function hasValidLink(field: LinkField | undefined): boolean {
 }
 
 const SocialLinks = ({ fields }: { fields: Fields }) => (
-  <div className="flex justify-center gap-4">
+  <div className="flex justify-center gap-4 text-footer-foreground [&_a]:text-footer-foreground">
     {hasValidLink(fields?.FacebookLink) ? (
       <ContentSdkLink
         field={fields?.FacebookLink}
@@ -78,8 +78,7 @@ const SocialLinks = ({ fields }: { fields: Fields }) => (
 export const Default = (props: FooterSTProps) => {
   return (
     <section
-      className={`relative bg-primary pt-16 lg:pt-30 pb-8 bg-cover bg-center ${props.params.styles}`}
-      style={{ backgroundImage: 'url("/footer-texture.webp")' }}
+      className={`relative bg-footer text-footer-foreground pt-16 lg:pt-30 pb-8 ${props.params.styles}`}
       data-class-change
     >
       <div className="container mx-auto px-4">
@@ -103,8 +102,7 @@ export const Default = (props: FooterSTProps) => {
           />
         </div>
       </div>
-      <div className="h-20 lg:h-40 bg-sound-waves bg-contain bg-repeat bg-center my-12 lg:my-16"></div>
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto mt-12 px-4 lg:mt-16">
         <div className="flex flex-col gap-4 items-center lg:flex-row lg:justify-between">
           <SocialLinks fields={props.fields} />
           <div>
@@ -119,8 +117,7 @@ export const Default = (props: FooterSTProps) => {
 export const LogoLeft = (props: FooterSTProps) => {
   return (
     <section
-      className={`relative bg-primary pt-16 lg:pt-30 bg-cover bg-center ${props.params.styles}`}
-      style={{ backgroundImage: 'url("/footer-texture.webp")' }}
+      className={`relative bg-footer pb-12 text-footer-foreground pt-16 lg:pb-16 lg:pt-30 ${props.params.styles}`}
       data-class-change
     >
       <div className="container mx-auto px-4">
@@ -154,7 +151,6 @@ export const LogoLeft = (props: FooterSTProps) => {
           </div>
         </div>
       </div>
-      <div className="h-10 lg:h-20 bg-sound-waves bg-[length:auto_200%] bg-repeat bg-top bg-center-x mt-12 lg:mt-16"></div>
     </section>
   );
 };
@@ -162,11 +158,9 @@ export const LogoLeft = (props: FooterSTProps) => {
 export const LogoRight = (props: FooterSTProps) => {
   return (
     <section
-      className={`relative bg-primary pb-8 bg-cover bg-center ${props.params.styles}`}
-      style={{ backgroundImage: 'url("/footer-texture.webp")' }}
+      className={`relative bg-footer pt-10 text-footer-foreground pb-8 lg:pt-12 ${props.params.styles}`}
       data-class-change
     >
-      <div className="h-10 lg:h-20 bg-sound-waves bg-[length:auto_200%] bg-repeat bg-bottom bg-center-x mb-12 lg:mb-16"></div>
       <div className="container mx-auto px-4">
         <div className="grid lg:grid-cols-2">
           <h2 className="lg:order-2 text-4xl lg:text-7xl mb-10 lg:mb-0 lg:text-right uppercase">
@@ -205,12 +199,10 @@ export const LogoRight = (props: FooterSTProps) => {
 export const Centered = (props: FooterSTProps) => {
   return (
     <section
-      className={`relative bg-primary py-8 lg:py-20 bg-cover bg-center ${props.params.styles}`}
-      style={{ backgroundImage: 'url("/footer-texture.webp")' }}
+      className={`relative bg-footer text-footer-foreground py-8 lg:py-20 ${props.params.styles}`}
       data-class-change
     >
-      <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-20 lg:h-40 bg-sound-waves bg-contain bg-repeat bg-center filter invert opacity-75 z-10"></div>
-      <div className="relative container mx-auto px-4 z-20">
+      <div className="relative container mx-auto px-4">
         <div className="grid lg:grid-cols-3 lg:gap-4">
           <h2 className="text-4xl lg:text-5xl mb-10 lg:mb-0 uppercase">
             <ContentSdkText field={props.fields?.Title} />
