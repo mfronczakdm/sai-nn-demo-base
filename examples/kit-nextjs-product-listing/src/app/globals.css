@@ -21,7 +21,7 @@
     font-size: 1rem;
     line-height: 1.5;
     font-weight: 400;
-    color: var(--color-brand-black);
+    color: var(--color-brand-black, #1a1a1a);
   }
 
   * {
@@ -82,13 +82,14 @@
   /* BUTTONS */
   .btn {
     font-family: var(--font-accent);
-    @apply inline-block text-sm font-medium transition-colors;
+    @apply inline-block text-sm font-medium transition-all;
 
     &.btn-primary {
-      @apply py-3 px-5 rounded-full bg-primary;
+      @apply rounded-full py-3 px-5 text-primary-foreground;
+      background-image: linear-gradient(90deg, var(--color-brand-red) 0%, var(--color-brand-orange) 100%);
 
       &:hover {
-        @apply bg-primary-hover;
+        background-image: linear-gradient(90deg, #d91a1e 0%, #e85a0f 100%);
       }
     }
 
@@ -113,11 +114,12 @@
     }
 
     &.btn-outline {
-      @apply py-3 px-5 rounded-full bg-primary outline;
-    }
+      @apply rounded-full py-3 px-5 text-primary-foreground outline;
+      background-image: linear-gradient(90deg, var(--color-brand-red) 0%, var(--color-brand-orange) 100%);
 
-    &:hover {
-      @apply bg-primary-hover;
+      &:hover {
+        background-image: linear-gradient(90deg, #d91a1e 0%, #e85a0f 100%);
+      }
     }
   }
 }
