@@ -21,39 +21,41 @@
   --border-width-2: 0.125rem;
   --border-width-4: 0.25rem;
   --border-width-8: 0.5rem;
-  --color-background: hsl(0, 0%, 100%);
-  --color-foreground: hsl(15, 75%, 28%);
-  --color-card: hsl(15, 75%, 28%);
-  --color-card-foreground: hsl(0, 0%, 9.02%);
-  --color-popover: hsl(0, 0%, 100%);
-  --color-popover-foreground: hsl(0, 0%, 9%);
-  --color-primary: hsl(15, 75%, 28%);
-  --color-primary-foreground: hsl(0, 0%, 100%);
-  --color-primary-hover: hsl(25, 95%, 53%);
-  --color-secondary: hsl(0, 0%, 96%);
-  --color-secondary-foreground: hsl(0, 0%, 32%);
-  --color-secondary-hover: hsl(0, 0%, 96%, 0.8);
-  --color-muted: hsl(0, 0%, 96%);
-  --color-muted-foreground: hsl(0, 0%, 64%);
-  --color-accent: hsl(21, 90%, 48%);
-  --color-accent-foreground: hsl(0, 0%, 9%);
+  --color-background: #ffffff;
+  --color-foreground: #333e48;
+  --color-card: #ffffff;
+  --color-card-foreground: #333e48;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #333e48;
+  /* Paylocity-style brand red → orange (solid stops for utilities; primary buttons use gradient in UI) */
+  --color-primary: #e63629;
+  --color-primary-foreground: #ffffff;
+  --color-primary-hover: #f37f2f;
+  --color-secondary: hsl(206, 16%, 96%);
+  --color-secondary-foreground: #333e48;
+  --color-secondary-hover: hsl(206, 16%, 92%);
+  --color-muted: hsl(206, 14%, 96%);
+  --color-muted-foreground: hsl(206, 12%, 45%);
+  --color-accent: #f37f2f;
+  --color-accent-foreground: #333e48;
+  /* Prose / links — brand red */
+  --color-brand: #e63629;
   --color-destructive: hsl(0, 72%, 51%);
   --color-destructive-hover: hsl(0, 74%, 42%);
   --color-destructive-foreground: hsl(0, 0%, 100%);
   --color-border: hsl(0, 0%, 83%);
   --color-input: hsl(0, 0%, 83%);
-  --color-ring: hsl(221, 83%, 53%);
-  --color-tertiary-foreground: hsl(0, 0%, 32%);
+  --color-ring: #e63629;
+  --color-tertiary-foreground: #333e48;
   --color-tertiary-hover: hsl(0, 0%, 96%, 0.8);
   --color-tertiary: hsl(0, 0%, 96%);
-  --color-dark-foreground: hsl(0, 0%, 32%);
+  --color-dark-foreground: #333e48;
   --color-dark-hover: hsl(0, 0%, 96%, 0.8);
   --color-dark: hsl(0, 0%, 96%);
   --color-light: hsl(0, 0%, 96%);
   --color-light-hover: hsl(0, 0%, 96%, 0.8);
-  --color-light-foreground: hsl(240, 6%, 10%);
+  --color-light-foreground: #333e48;
   --color-overlay: hsl(0, 0%, 96%, 0.8);
-  --disabled: [object Object];
   --figma-automations-logo: Brand A;
   --figma-automations-hero: Hero 1;
   --figma-automations-navigation: Style 1;
@@ -264,4 +266,17 @@
   --width-3-5: 0.875rem;
   --width-px: 0.0625rem;
   --radius: var(--border-radius-default, 0.25rem);
+}
+
+/*
+ * HSL components (no hsl() wrapper) for tailwind `img-*` background overlays
+ * in tailwind.config.cjs — hsla(var(--colors-*) / alpha)
+ */
+:root {
+  --colors-primary: 4 79% 53%;
+  --colors-secondary: 206 16% 96%;
+  --colors-muted: 206 14% 96%;
+  --colors-foreground: 206 17% 24%;
+  --colors-background: 0 0% 100%;
+  --colors-accent: 24 89% 57%;
 }
