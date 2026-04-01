@@ -164,7 +164,7 @@ export const Default: React.FC<ArticleHeaderProps> = ({ fields, externalFields }
       {
         title: 'Share on Facebook',
         icon: (
-          <Facebook className="h-full w-full text-white dark:text-neutral-300" aria-hidden="true" />
+          <Facebook className="text-foreground h-full w-full dark:text-neutral-300" aria-hidden="true" />
         ),
         href: '#',
         onClick: () => handleShare('facebook'),
@@ -173,7 +173,7 @@ export const Default: React.FC<ArticleHeaderProps> = ({ fields, externalFields }
       {
         title: 'Share on Twitter',
         icon: (
-          <Twitter className="h-full w-full text-white dark:text-neutral-300" aria-hidden="true" />
+          <Twitter className="text-foreground h-full w-full dark:text-neutral-300" aria-hidden="true" />
         ),
         href: '#',
         onClick: () => handleShare('twitter'),
@@ -182,7 +182,7 @@ export const Default: React.FC<ArticleHeaderProps> = ({ fields, externalFields }
       {
         title: 'Share on LinkedIn',
         icon: (
-          <Linkedin className="h-full w-full text-white dark:text-neutral-300" aria-hidden="true" />
+          <Linkedin className="text-foreground h-full w-full dark:text-neutral-300" aria-hidden="true" />
         ),
         href: '#',
         onClick: () => handleShare('linkedin'),
@@ -191,7 +191,7 @@ export const Default: React.FC<ArticleHeaderProps> = ({ fields, externalFields }
       {
         title: 'Share via Email',
         icon: (
-          <Mail className="h-full w-full text-white dark:text-neutral-300" aria-hidden="true" />
+          <Mail className="text-foreground h-full w-full dark:text-neutral-300" aria-hidden="true" />
         ),
         href: '#',
         onClick: () => handleShare('email'),
@@ -202,7 +202,7 @@ export const Default: React.FC<ArticleHeaderProps> = ({ fields, externalFields }
         icon: copySuccess ? (
           <Check className="h-full w-full text-green-500 dark:text-green-400" aria-hidden="true" />
         ) : (
-          <Link className="h-full w-full text-white dark:text-neutral-300" aria-hidden="true" />
+          <Link className="text-foreground h-full w-full dark:text-neutral-300" aria-hidden="true" />
         ),
         href: '#',
         onClick: () => handleShare('copy'),
@@ -218,10 +218,14 @@ export const Default: React.FC<ArticleHeaderProps> = ({ fields, externalFields }
           className={cn('@container article-header relative mb-[86px] overflow-hidden')}
           ref={headerRef}
         >
-          <article className="  relative z-0 h-[auto] overflow-hidden bg-black" itemScope itemType="https://schema.org/Article">
+          <article
+            className="relative z-0 h-[auto] overflow-hidden bg-background"
+            itemScope
+            itemType="https://schema.org/Article"
+          >
             {/* Background Image with Parallax */}
             <figure
-              className="z-5 absolute inset-0 h-[120%] w-[120%] bg-cover bg-center opacity-70 transition-transform duration-200 ease-out"
+              className="absolute inset-0 z-0 h-[120%] w-[120%] bg-cover bg-center transition-transform duration-200 ease-out"
               style={parallaxStyle}
             >
               <ImageWrapper
@@ -234,19 +238,17 @@ export const Default: React.FC<ArticleHeaderProps> = ({ fields, externalFields }
                 itemProp="image"
               />
             </figure>
-            {/* Blur overlay - separate for better performance */}
-            <div className="absolute inset-0 backdrop-blur-md"></div>
             {/* White Section */}
             {/* in order to be fully responsive the hight of this section needs to be half of the height of the image */}
-            <div className="@xs:h-[125px] @sm:h-[150px] @md:h-[140px] @lg:h-[140px] absolute bottom-0 h-[90px] w-full  bg-white"></div>
+            <div className="@xs:h-[125px] @sm:h-[150px] @md:h-[140px] @lg:h-[140px] absolute bottom-0 z-[1] h-[90px] w-full bg-white"></div>
 
             {/* Content */}
-            <div className="z-1 @md:gap-[200px] @md:pb-0 relative mx-auto flex h-full flex-col justify-between p-0 pb-6 pt-[220px]">
+            <div className="relative z-10 mx-auto flex h-full flex-col justify-between p-0 pb-6 pt-[220px] @md:gap-[200px] @md:pb-0">
               <div className="flex flex-col">
                 {/* Back Button */}
                 <ButtonBase
                   buttonLink={{ value: { href: '/news', text: 'Back to news' } }}
-                  className="absolute left-0 top-[41px] mb-8 inline-flex items-center text-white/90 transition-colors hover:text-white"
+                  className="text-foreground absolute left-0 top-[41px] mb-8 inline-flex items-center transition-colors hover:opacity-80"
                   icon={{ value: 'arrow-left' }}
                   variant="link"
                   iconPosition="leading"
@@ -260,13 +262,13 @@ export const Default: React.FC<ArticleHeaderProps> = ({ fields, externalFields }
                 {/* Title */}
                 <Text
                   tag="h1"
-                  className="@md:text-[62px] @md:mb-0 font-heading line-height-[69px] mx-auto max-w-4xl text-pretty px-6 text-center text-4xl font-normal tracking-tighter text-white antialiased"
+                  className="@md:text-[62px] @md:mb-0 font-heading text-foreground line-height-[69px] mx-auto max-w-4xl text-pretty px-6 text-center text-4xl font-normal tracking-tighter antialiased"
                   field={pageHeaderTitle}
                   itemProp="headline"
                 />
                 {/* Read Time and Date - Centered */}
                 {(pageReadTime || pageDisplayDate) && (
-                  <div className="@md:flex-row mb-8 flex flex-col items-center justify-center space-x-2 text-center text-white/70">
+                  <div className="@md:flex-row text-muted-foreground mb-8 flex flex-col items-center justify-center space-x-2 text-center">
                     {pageReadTime && (
                       <Text
                         tag="span"
@@ -300,7 +302,7 @@ export const Default: React.FC<ArticleHeaderProps> = ({ fields, externalFields }
                       <AvatarFallback>{`${pageAuthor?.value?.personFirstName?.value} ${pageAuthor?.value?.personLastName?.value}`}</AvatarFallback>
                     </Avatar>
                     <div className="relative">
-                      <p className="text-pretty font-medium text-white antialiased">
+                      <p className="text-foreground text-pretty font-medium antialiased">
                         {pageAuthor?.value?.personFirstName?.value}{' '}
                         {pageAuthor?.value?.personLastName?.value}
                       </p>
@@ -308,7 +310,7 @@ export const Default: React.FC<ArticleHeaderProps> = ({ fields, externalFields }
                         <Text
                           tag={'p'}
                           field={pageAuthor?.value?.personJobTitle}
-                          className="text-pretty text-sm text-white/70 antialiased"
+                          className="text-muted-foreground text-pretty text-sm antialiased"
                         />
                       )}
                     </div>
@@ -317,7 +319,7 @@ export const Default: React.FC<ArticleHeaderProps> = ({ fields, externalFields }
 
                 {/* Share Section - Mobile Only */}
                 <div className="@md:hidden col-span-1 flex h-[auto] items-center justify-center gap-4 p-6 pb-6">
-                  <p className="@md:mb-2 m-0 flex items-center justify-center text-pretty font-medium text-white antialiased">
+                  <p className="@md:mb-2 text-foreground m-0 flex items-center justify-center text-pretty font-medium antialiased">
                     Share
                   </p>
                   <FloatingDock items={links} forceCollapse={forceCollapse} />
@@ -338,7 +340,7 @@ export const Default: React.FC<ArticleHeaderProps> = ({ fields, externalFields }
 
                 {/* Share Section - Desktop Only */}
                 <div className="@md:col-span-3 @md:justify-start @md:pt-4 @md:h-[250px] @md:items-start @md:flex hidden h-[auto] items-center justify-center gap-4 p-6 pb-6">
-                  <p className="@md:mt-2 m-0 mb-2 flex items-center justify-center text-pretty font-medium text-white antialiased">
+                  <p className="@md:mt-2 text-foreground m-0 mb-2 flex items-center justify-center text-pretty font-medium antialiased">
                     Share
                   </p>
                   <FloatingDock items={links} forceCollapse={forceCollapse} />

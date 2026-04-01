@@ -11,7 +11,6 @@ import Link from 'next/link';
 import { MiniCart } from './non-sitecore/MiniCart';
 import { SearchBox } from './non-sitecore/SearchBox';
 import { ComponentProps } from 'lib/component-props';
-import { cn } from 'lib/utils';
 import componentMap from '.sitecore/component-map';
 import { MobileMenuWrapper } from './MobileMenuWrapper';
 
@@ -29,30 +28,21 @@ type HeaderSTProps = ComponentProps & {
 
 const navLinkClass = 'block p-4 font-[family-name:var(--font-accent)] font-medium';
 
-function isShowLogoBackgroundEnabled(value: string | undefined): boolean {
-  if (value === undefined || value === '') {
-    return true;
-  }
-  const lower = String(value).toLowerCase();
-  return !['0', 'false', 'no'].includes(lower);
-}
-
 export const Default = (props: HeaderSTProps) => {
   const { fields } = props;
-  const showLogoBackground = isShowLogoBackgroundEnabled(props.params?.ShowLogoBackground);
 
   return (
     <section className={`${props.params?.styles}`} data-class-change>
       <div className="flex justify-between items-start">
         <Link
           href="/"
-          className={cn(
-            'relative z-100 flex h-24 w-24 shrink-0 grow-0 items-center justify-center p-4 lg:h-32 lg:w-32 lg:p-6',
-            showLogoBackground ? 'bg-primary' : 'bg-background',
-          )}
+          className="relative z-100 flex shrink-0 items-center justify-center py-4 pr-2 lg:py-6 lg:pr-4"
           prefetch={false}
         >
-          <ContentSdkImage field={props.fields?.Logo} className="w-full h-full object-contain" />
+          <ContentSdkImage
+            field={props.fields?.Logo}
+            className="h-12 w-auto max-h-16 max-w-[10rem] object-contain object-left lg:h-16 lg:max-h-20 lg:max-w-[12rem]"
+          />
         </Link>
 
         <div
