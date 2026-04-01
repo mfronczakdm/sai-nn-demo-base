@@ -27,7 +27,7 @@
   --color-card-foreground: #333e48;
   --color-popover: #ffffff;
   --color-popover-foreground: #333e48;
-  /* Paylocity-style brand red → orange (solid stops for utilities; primary buttons use gradient in UI) */
+  /* Paylocity-style brand red → orange (solid stops for utilities; primary buttons and test use gradient in UI) */
   --color-primary: #e63629;
   --color-primary-foreground: #ffffff;
   --color-primary-hover: #f37f2f;
