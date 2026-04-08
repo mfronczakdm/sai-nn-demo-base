@@ -81,9 +81,10 @@
   --figma-automations-hero: Hero 1;
   --figma-automations-navigation: Style 1;
   --figma-automations-multipromo: Multi 1;
-  --font-family-heading: 'Montserrat', 'Montserrat Fallback';
-  --font-family-body: 'Montserrat', 'Montserrat Fallback';
-  --font-family-accent: 'Montserrat', 'Montserrat Fallback';
+  /* Use next/font --font-body (DM Sans) so Tailwind font-* matches loaded face */
+  --font-family-heading: var(--font-body);
+  --font-family-body: var(--font-body);
+  --font-family-accent: var(--font-body);
   --font-size-xs: 12px;
   --font-size-sm: 14px;
   --font-size-base: 16px;

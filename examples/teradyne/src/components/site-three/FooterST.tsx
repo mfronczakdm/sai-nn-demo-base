@@ -82,10 +82,10 @@ export const Default = (props: FooterSTProps) => {
       data-class-change
     >
       <div className="container mx-auto px-4">
-        <h2 className="text-4xl lg:text-7xl mb-10 lg:mb-20 uppercase">
+        <h2 className="text-4xl lg:text-7xl mb-10 lg:mb-20">
           <ContentSdkText field={props.fields?.Title} />
         </h2>
-        <div className="max-w-5xl mx-auto mb-6 lg:mb-12 font-(family-name:--font-heading) text-2xl uppercase">
+        <div className="max-w-5xl mx-auto mb-6 lg:mb-12 font-(family-name:--font-heading) text-2xl">
           <AppPlaceholder
             name={`footer-primary-links-${props.params.DynamicPlaceholderId}`}
             rendering={props.rendering}
@@ -122,11 +122,11 @@ export const LogoLeft = (props: FooterSTProps) => {
     >
       <div className="container mx-auto px-4">
         <div className="grid lg:grid-cols-2">
-          <h2 className="text-4xl lg:text-7xl mb-10 lg:mb-0 uppercase">
+          <h2 className="text-4xl lg:text-7xl mb-10 lg:mb-0">
             <ContentSdkText field={props.fields?.Title} />
           </h2>
           <div className="lg:flex justify-end items-start gap-12">
-            <div className="mb-6 lg:mb-0 font-(family-name:--font-heading) uppercase text-2xl">
+            <div className="mb-6 lg:mb-0 font-(family-name:--font-heading) text-2xl">
               <AppPlaceholder
                 name={`footer-primary-links-${props.params.DynamicPlaceholderId}`}
                 rendering={props.rendering}
@@ -163,11 +163,11 @@ export const LogoRight = (props: FooterSTProps) => {
     >
       <div className="container mx-auto px-4">
         <div className="grid lg:grid-cols-2">
-          <h2 className="lg:order-2 text-4xl lg:text-7xl mb-10 lg:mb-0 lg:text-right uppercase">
+          <h2 className="lg:order-2 text-4xl lg:text-7xl mb-10 lg:mb-0 lg:text-right">
             <ContentSdkText field={props.fields?.Title} />
           </h2>
           <div className="lg:flex items-start gap-12">
-            <div className="mb-6 lg:mb-0 font-(family-name:--font-heading) uppercase text-2xl">
+            <div className="mb-6 lg:mb-0 font-(family-name:--font-heading) text-2xl">
               <AppPlaceholder
                 name={`footer-primary-links-${props.params.DynamicPlaceholderId}`}
                 rendering={props.rendering}
@@ -204,11 +204,11 @@ export const Centered = (props: FooterSTProps) => {
     >
       <div className="relative container mx-auto px-4">
         <div className="grid lg:grid-cols-3 lg:gap-4">
-          <h2 className="text-4xl lg:text-5xl mb-10 lg:mb-0 uppercase">
+          <h2 className="text-4xl lg:text-5xl mb-10 lg:mb-0">
             <ContentSdkText field={props.fields?.Title} />
           </h2>
           <div>
-            <div className="mb-6 lg:mb-12 font-(family-name:--font-heading) uppercase text-2xl">
+            <div className="mb-6 lg:mb-12 font-(family-name:--font-heading) text-2xl">
               <AppPlaceholder
                 name={`footer-primary-links-${props.params.DynamicPlaceholderId}`}
                 rendering={props.rendering}

@@ -134,6 +134,8 @@ import * as LogoItem from 'src/components/logo-tabs/LogoItem';
 import * as logotabsprops from 'src/components/logo-tabs/logo-tabs.props';
 import * as logoprops from 'src/components/logo/logo.props';
 import * as Logodev from 'src/components/logo/Logo.dev';
+import * as LoginForm from 'src/components/login/LoginForm';
+import * as loginformprops from 'src/components/login/login-form.props';
 import * as utils from 'src/components/location-search/utils';
 import * as LocationSearchTitleZipCentereddev from 'src/components/location-search/LocationSearchTitleZipCentered.dev';
 import * as LocationSearchMapTopAllCentereddev from 'src/components/location-search/LocationSearchMapTopAllCentered.dev';
@@ -396,6 +398,8 @@ export const componentMap = new Map<string, NextjsContentSdkComponent>([
   ['logo-tabs', { ...logotabsprops }],
   ['logo', { ...logoprops }],
   ['Logo', { ...Logodev }],
+  ['LoginForm', { ...LoginForm, componentType: 'client' }],
+  ['login-form', { ...loginformprops }],
   ['utils', { ...utils }],
   ['LocationSearchTitleZipCentered', { ...LocationSearchTitleZipCentereddev }],
   ['LocationSearchMapTopAllCentered', { ...LocationSearchMapTopAllCentereddev }],

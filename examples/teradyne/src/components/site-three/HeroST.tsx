@@ -45,10 +45,10 @@ export const Default = (props: PageHeaderSTProps) => {
         <div className="relative lg:container w-full lg:flex mx-auto z-20" ref={containerRef}>
         <div className="flex flex-col justify-center mt-6 lg:mt-0 lg:w-2/3 lg:min-h-[34rem] px-4 py-6 lg:p-6 backdrop-blur-[20px] bg-[linear-gradient(136deg,_rgba(255,255,255,0.21)_2.61%,_rgba(255,255,255,0.42)_73.95%)]">
           <div className="lg:max-w-3xl">
-            <h1 className="text-primary text-xl lg:text-3xl pb-3 uppercase">
+            <h1 className="text-primary text-xl lg:text-3xl pb-3">
               <ContentSdkText field={props?.fields?.Eyebrow} />
             </h1>
-            <h1 className="text-4xl lg:text-6xl uppercase">
+            <h1 className="text-4xl lg:text-6xl">
               <ContentSdkText field={props?.fields?.Title} />
             </h1>
             <div className="mt-6">
@@ -107,10 +107,10 @@ export const Right = (props: PageHeaderSTProps) => {
       >
         <div className="flex flex-col justify-center mt-6 lg:mt-0 lg:w-2/3 lg:min-h-[34rem] px-4 py-6 lg:p-6 backdrop-blur-[20px] bg-[linear-gradient(136deg,_rgba(255,255,255,0.21)_2.61%,_rgba(255,255,255,0.42)_73.95%)]">
           <div className="lg:max-w-3xl lg:ml-auto text-right">
-            <h1 className="text-primary text-xl lg:text-3xl pb-3 uppercase">
+            <h1 className="text-primary text-xl lg:text-3xl pb-3">
               <ContentSdkText field={props?.fields?.Eyebrow} />
             </h1>
-            <h1 className="text-4xl lg:text-6xl uppercase">
+            <h1 className="text-4xl lg:text-6xl">
               <ContentSdkText field={props?.fields?.Title} />
             </h1>
             <div className="mt-6">
@@ -164,10 +164,10 @@ export const Centered = (props: PageHeaderSTProps) => {
       <div className="relative lg:container w-full lg:flex mx-auto z-20" ref={containerRef}>
         <div className="lg:relative lg:left-1/6 flex flex-col justify-center mt-6 lg:mt-0 lg:w-2/3 lg:min-h-[34rem] px-4 py-6 lg:p-6 backdrop-blur-[20px] bg-[linear-gradient(136deg,_rgba(255,255,255,0.21)_2.61%,_rgba(255,255,255,0.42)_73.95%)]">
           <div className="lg:max-w-3xl lg:mx-auto text-center">
-            <h1 className="text-primary text-xl lg:text-3xl pb-3 uppercase">
+            <h1 className="text-primary text-xl lg:text-3xl pb-3">
               <ContentSdkText field={props?.fields?.Eyebrow} />
             </h1>
-            <h1 className="text-4xl lg:text-6xl uppercase">
+            <h1 className="text-4xl lg:text-6xl">
               <ContentSdkText field={props?.fields?.Title} />
             </h1>
             <div className="mt-6">
@@ -209,10 +209,10 @@ export const SplitScreen = (props: PageHeaderSTProps) => {
     >
       <div className="flex flex-col lg:flex-row lg:min-h-[34rem]">
         <div className="p-6 lg:basis-full lg:self-center lg:p-10">
-          <h1 className="text-xl lg:text-3xl pb-3 uppercase">
+          <h1 className="text-xl lg:text-3xl pb-3">
             <ContentSdkText field={props?.fields?.Eyebrow} />
           </h1>
-          <h1 className="text-4xl lg:text-6xl uppercase">
+          <h1 className="text-4xl lg:text-6xl">
             <ContentSdkText field={props?.fields?.Title} />
           </h1>
           <div className="mt-6">
@@ -262,10 +262,10 @@ export const Stacked = (props: PageHeaderSTProps) => {
     >
       <div className="container px-4 mx-auto">
         <div className="relative lg:w-1/2 px-6 py-8 bg-primary z-20">
-          <h1 className="text-xl lg:text-3xl pb-3 uppercase">
+          <h1 className="text-xl lg:text-3xl pb-3">
             <ContentSdkText field={props?.fields?.Eyebrow} />
           </h1>
-          <h1 className="text-4xl lg:text-6xl uppercase">
+          <h1 className="text-4xl lg:text-6xl">
             <ContentSdkText field={props?.fields?.Title} />
           </h1>
           <div className="mt-6">

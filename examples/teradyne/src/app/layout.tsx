@@ -1,12 +1,11 @@
 import './globals.css';
 
-import { Montserrat } from 'next/font/google';
+import { DM_Sans } from 'next/font/google';
 
-const body = Montserrat({
-  weight: ['300', '400', '500', '600', '700', '800'],
-  variable: '--font-body',
+const body = DM_Sans({
   subsets: ['latin', 'latin-ext'],
   display: 'swap',
+  variable: '--font-body',
   preload: true,
 });
 

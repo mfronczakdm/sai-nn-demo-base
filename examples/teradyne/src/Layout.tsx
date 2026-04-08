@@ -6,17 +6,16 @@ import { Field, ImageField, Page, AppPlaceholder } from '@sitecore-content-sdk/n
 import Scripts from 'src/Scripts';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import Providers from 'src/Providers';
-import { Montserrat } from 'next/font/google';
+import { DM_Sans } from 'next/font/google';
 import { DesignLibraryApp } from '@sitecore-content-sdk/nextjs';
 import componentMap from '.sitecore/component-map';
 import { generateOrganizationSchema, generateWebSiteSchema } from 'src/lib/structured-data/schema';
 import { StructuredData } from 'src/components/structured-data/StructuredData';
 
-const body = Montserrat({
-  weight: ['300', '400', '500', '600', '700', '800'],
-  variable: '--font-body',
+const body = DM_Sans({
   subsets: ['latin', 'latin-ext'],
   display: 'swap',
+  variable: '--font-body',
   preload: true,
 });
 
