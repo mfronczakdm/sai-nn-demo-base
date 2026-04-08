@@ -251,6 +251,83 @@ describe('HeroST', () => {
     });
   });
 
+  describe('Color scheme (Sitecore styling parameters)', () => {
+    it('applies dark image typography and light-style buttons when colorScheme is dark', () => {
+      const { container } = render(
+        <HeroSTDefault
+          {...mockProps}
+          params={{ ...mockProps.params, colorScheme: 'dark' }}
+        />
+      );
+      const headings = container.querySelectorAll('h1');
+      expect(headings[0].querySelector('span')).toHaveClass('!text-white');
+      expect(headings[1].querySelector('span')).toHaveClass('!text-white');
+      const links = container.querySelectorAll('a');
+      expect(links[0].className).toContain('bg-white');
+      expect(links[1].className).toContain('border-white');
+    });
+
+    it('applies dark typography when ColorScheme is PascalCase', () => {
+      const { container } = render(
+        <HeroSTDefault
+          {...mockProps}
+          params={{ ...mockProps.params, ColorScheme: 'Dark' }}
+        />
+      );
+      const titleHeading = container.querySelectorAll('h1')[1];
+      expect(titleHeading.querySelector('span')).toHaveClass('!text-white');
+    });
+
+    it('applies light image typography when colorScheme is light', () => {
+      const { container } = render(
+        <HeroSTDefault
+          {...mockProps}
+          params={{ ...mockProps.params, colorScheme: 'light' }}
+        />
+      );
+      const headings = container.querySelectorAll('h1');
+      expect(headings[0].querySelector('span')).toHaveClass(
+        'text-[var(--color-brand-navy)]'
+      );
+      expect(headings[1].querySelector('span')).toHaveClass(
+        'text-[var(--color-brand-black)]'
+      );
+    });
+
+    it('applies gradient and omits images when colorScheme is default (Default scheme)', () => {
+      const { container } = render(
+        <HeroSTDefault
+          {...mockProps}
+          params={{ ...mockProps.params, colorScheme: 'default' }}
+        />
+      );
+      const section = container.querySelector('section');
+      expect(section?.style.background).toContain('rgb(13, 29, 59)');
+      expect(section?.style.background).toContain('rgb(88, 194, 173)');
+      expect(screen.queryAllByRole('img')).toHaveLength(0);
+    });
+
+    it('still renders images when colorScheme is not set (unset)', () => {
+      render(<HeroSTDefault {...mockProps} />);
+      expect(screen.getAllByRole('img').length).toBeGreaterThan(0);
+    });
+
+    it('applies solid light panel classes for SplitScreen when colorScheme is light', () => {
+      render(
+        <HeroSTSplitScreen
+          {...mockProps}
+          params={{ ...mockProps.params, colorScheme: 'light' }}
+        />
+      );
+      const title = screen.getByText('Premium Audio Experience');
+      const column = title.parentElement?.parentElement;
+      expect(column).toHaveClass('bg-background');
+      const headings = column?.querySelectorAll('h1');
+      expect(headings?.[0].querySelector('span')).toHaveClass('text-primary');
+      expect(headings?.[1].querySelector('span')).toHaveClass('text-foreground');
+    });
+  });
+
   describe('Edge cases and missing data', () => {
     it('handles completely missing fields in default variant', () => {
       const propsWithoutFields: any = {
