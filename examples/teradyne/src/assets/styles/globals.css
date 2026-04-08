@@ -3,8 +3,8 @@
  */
 
 @theme {
-  --background-image-gradient: linear-gradient(180deg, #ed2024 0%, #fd6311 45%, #1a1a1a 100%);
-  --background-image-gradient-secondary: linear-gradient(90deg, #ed2024 0%, #fd6311 50%, #ed2024 100%);
+  --background-image-gradient: linear-gradient(180deg, #215299 0%, #007bff 42%, #213e7c 100%);
+  --background-image-gradient-secondary: linear-gradient(90deg, #213e7c 0%, #007bff 50%, #213e7c 100%);
   --background-image-sound-waves: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20version%3D%221.1%22%20id%3D%22Layer_1%22%20x%3D%220px%22%20y%3D%220px%22%20viewBox%3D%220%200%20544.3%20174%22%20style%3D%22enable-background%3Anew%200%200%20544.3%20174%3B%22%20xml%3Aspace%3D%22preserve%22%3E%3Cstyle%20type%3D%22text/css%22%3E%0A%09.st0%7Bfill%3Anone%3Bstroke%3A%23000000%3Bstroke-width%3A17.1333%3Bstroke-linecap%3Asquare%3B%7D%0A%3C/style%3E%3Cpath%20class%3D%22st0%22%20d%3D%22M25.7%2C116.3L25%2C57.8%22/%3E%3Cpath%20class%3D%22st0%22%20d%3D%22M75.7%2C116.3L75%2C57.8%22/%3E%3Cpath%20class%3D%22st0%22%20d%3D%22M124.9%2C129.8V44.2%22/%3E%3Cpath%20class%3D%22st0%22%20d%3D%22M174.2%2C129.8V44.2%22/%3E%3Cpath%20class%3D%22st0%22%20d%3D%22M223.5%2C148.6V25.4%22/%3E%3Cpath%20class%3D%22st0%22%20d%3D%22M272.8%2C165V9%22/%3E%3Cpath%20class%3D%22st0%22%20d%3D%22M322%2C148.6V25.4%22/%3E%3Cpath%20class%3D%22st0%22%20d%3D%22M371.3%2C129.8V44.2%22/%3E%3Cpath%20class%3D%22st0%22%20d%3D%22M420.6%2C129.8V44.2%22/%3E%3Cpath%20class%3D%22st0%22%20d%3D%22M470.5%2C116.3l-0.7-58.5%22/%3E%3Cpath%20class%3D%22st0%22%20d%3D%22M520.5%2C116.3l-0.7-58.5%22/%3E%3C/svg%3E');
   --blur-none: 0;
   --blur-sm: 0.25rem;
@@ -29,44 +29,52 @@
   --border-width-4: 0.25rem;
   --border-width-8: 0.5rem;
   --color-background: #ffffff;
-  --color-background: #ffffff;
-  --color-foreground: #000000;
+  --color-foreground: #54585a;
   --color-card: #ffffff;
-  --color-card-foreground: #000000;
+  --color-card-foreground: #54585a;
   --color-popover: #ffffff;
-  --color-popover-foreground: #171717;
-  /* Paylocity-inspired brand: #ED2024 (red) → #FD6311 (orange) */
-  --color-brand-black: #1a1a1a;
-  --color-brand-red: #ed2024;
-  --color-brand-orange: #fd6311;
-  --color-primary: #fd6311;
+  --color-popover-foreground: #54585a;
+  /* Teradyne brand palette: #E5E7EB #54585A #213E7C #215299 #007BFF #81BC00 */
+  --color-brand-black: #54585a;
+  --color-brand-navy: #213e7c;
+  --color-brand-blue: #215299;
+  --color-brand-accent: #007bff;
+  --color-brand-green: #81bc00;
+  /* SXA / legacy utility aliases */
+  --color-brand-gray95: #e5e7eb;
+  --color-brand-sky: #007bff;
+  --color-brand-purple: #213e7c;
+  /* Gradient/button pairings (legacy names map to navy → accent blue) */
+  --color-brand-red: #213e7c;
+  --color-brand-orange: #007bff;
+  --color-primary: #215299;
   --color-primary-foreground: #ffffff;
-  --color-primary-hover: #e85a0f;
-  --color-secondary: #f5f5f5;
-  --color-secondary-foreground: #525252;
-  --color-secondary-hover: #f5f5f5b3;
-  /* Footer / dark band (Paylocity-style slate) */
-  --color-footer: #323e48;
-  --color-footer-foreground: #f0f4f8;
-  --color-muted: #f5f5f5;
-  --color-muted-foreground: #a3a3a3;
-  --color-accent: #fd6311;
+  --color-primary-hover: #213e7c;
+  --color-secondary: #e5e7eb;
+  --color-secondary-foreground: #54585a;
+  --color-secondary-hover: #d1d5db;
+  /* Footer / dark band */
+  --color-footer: #213e7c;
+  --color-footer-foreground: #e5e7eb;
+  --color-muted: #e5e7eb;
+  --color-muted-foreground: #54585a;
+  --color-accent: #007bff;
   --color-accent-foreground: #ffffff;
   --color-destructive: #dc2626;
   --color-destructive-hover: #b91c1c;
   --color-destructive-foreground: #ffffff;
-  --color-border: #d4d4d4;
-  --color-input: #d4d4d4;
-  --color-ring: #ed2024;
-  --color-tertiary-foreground: #525252;
-  --color-tertiary-hover: #f5f5f5b3;
-  --color-tertiary: #f5f5f5;
-  --color-dark-foreground: #525252;
-  --color-dark-hover: #f5f5f5b3;
-  --color-dark: #f5f5f5;
-  --color-light: #f5f5f5;
-  --color-light-hover: #f5f5f5b3;
-  --color-light-foreground: #18181b;
+  --color-border: #e5e7eb;
+  --color-input: #e5e7eb;
+  --color-ring: #007bff;
+  --color-tertiary-foreground: #54585a;
+  --color-tertiary-hover: #d1d5db;
+  --color-tertiary: #e5e7eb;
+  --color-dark-foreground: #54585a;
+  --color-dark-hover: #d1d5db;
+  --color-dark: #e5e7eb;
+  --color-light: #e5e7eb;
+  --color-light-hover: #d1d5db;
+  --color-light-foreground: #213e7c;
   --color-overlay: #f5f5f5b3;
   --disabled: [object Object];
   --figma-automations-logo: Brand A;

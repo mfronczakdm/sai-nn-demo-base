@@ -86,10 +86,10 @@
 
     &.btn-primary {
       @apply rounded-full py-3 px-5 text-primary-foreground;
-      background-image: linear-gradient(90deg, var(--color-brand-red) 0%, var(--color-brand-orange) 100%);
+      background-image: linear-gradient(90deg, var(--color-brand-navy) 0%, var(--color-brand-accent) 100%);
 
       &:hover {
-        background-image: linear-gradient(90deg, #d91a1e 0%, #e85a0f 100%);
+        background-image: linear-gradient(90deg, #1a3468 0%, #0066d6 100%);
       }
     }
 
@@ -115,10 +115,10 @@
 
     &.btn-outline {
       @apply rounded-full py-3 px-5 text-primary-foreground outline;
-      background-image: linear-gradient(90deg, var(--color-brand-red) 0%, var(--color-brand-orange) 100%);
+      background-image: linear-gradient(90deg, var(--color-brand-navy) 0%, var(--color-brand-accent) 100%);
 
       &:hover {
-        background-image: linear-gradient(90deg, #d91a1e 0%, #e85a0f 100%);
+        background-image: linear-gradient(90deg, #1a3468 0%, #0066d6 100%);
       }
     }
   }
