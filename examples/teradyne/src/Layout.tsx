@@ -96,7 +96,11 @@ const Layout = ({ page, baseUrl: baseUrlProp }: LayoutProps): JSX.Element => {
           ) : (
             <>
               <header
-                className={`sticky ${isEditing ? 'lg:relative' : 'lg:fixed'} top-0 left-0 right-0 -mb-[38px] lg:mb-0 z-50`}
+                className={
+                  isEditing
+                    ? 'relative z-50'
+                    : 'sticky top-0 left-0 right-0 z-50 bg-background'
+                }
               >
                 <nav id="header" aria-label="Main navigation">
                   {route && (
