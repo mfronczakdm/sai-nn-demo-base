@@ -102,7 +102,7 @@ export const AIAssistant: React.FC<AIAssistantProps> = ({
             onKeyDown={handleKeyDown}
             placeholder='e.g. "UltraFLEX firmware" or "driver for MiR250"'
             autoComplete="off"
-            className="bg-background"
+            className="border-input bg-background text-foreground placeholder:text-muted-foreground file:text-foreground"
           />
         </div>
         <Button type="button" className="w-full" onClick={handleApply}>
