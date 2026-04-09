@@ -5,6 +5,7 @@ import { Form } from '@sitecore-content-sdk/nextjs';
 
 import * as zipcodemodaldev from 'src/components/zipcode-modal/zipcode-modal.dev';
 import * as VerticalImageAccordion from 'src/components/vertical-image-accordion/VerticalImageAccordion';
+import * as UserPreferencesPanel from 'src/components/user-preferences/UserPreferencesPanel';
 import * as themeproviderdev from 'src/components/theme-provider/theme-provider.dev';
 import * as TextBannerTextTopdev from 'src/components/text-banner/TextBannerTextTop.dev';
 import * as TextBannerDefaultdev from 'src/components/text-banner/TextBannerDefault.dev';
@@ -127,6 +128,7 @@ export const componentMap = new Map<string, NextjsContentSdkComponent>([
   ['Form', Form],
   ['zipcode-modal', { ...zipcodemodaldev }],
   ['VerticalImageAccordion', { ...VerticalImageAccordion }],
+  ['UserPreferencesPanel', { ...UserPreferencesPanel }],
   ['theme-provider', { ...themeproviderdev }],
   ['TextBannerTextTop', { ...TextBannerTextTopdev }],
   ['TextBannerDefault', { ...TextBannerDefaultdev }],

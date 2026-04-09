@@ -7,6 +7,7 @@ import { Form } from '@sitecore-content-sdk/nextjs';
 import * as zipcodemodaldev from 'src/components/zipcode-modal/zipcode-modal.dev';
 import * as VerticalImageAccordion from 'src/components/vertical-image-accordion/VerticalImageAccordion';
 import * as verticalimageaccordionprops from 'src/components/vertical-image-accordion/vertical-image-accordion.props';
+import * as UserPreferencesPanel from 'src/components/user-preferences/UserPreferencesPanel';
 import * as TopicListing from 'src/components/topic-listing/TopicListing';
 import * as TopicItemdev from 'src/components/topic-listing/TopicItem.dev';
 import * as topiclistingprops from 'src/components/topic-listing/topic-listing.props';
@@ -275,6 +276,7 @@ export const componentMap = new Map<string, NextjsContentSdkComponent>([
   ['zipcode-modal', { ...zipcodemodaldev }],
   ['VerticalImageAccordion', { ...VerticalImageAccordion, componentType: 'client' }],
   ['vertical-image-accordion', { ...verticalimageaccordionprops }],
+  ['UserPreferencesPanel', { ...UserPreferencesPanel, componentType: 'client' }],
   ['TopicListing', { ...TopicListing }],
   ['TopicItem', { ...TopicItemdev }],
   ['topic-listing', { ...topiclistingprops }],
