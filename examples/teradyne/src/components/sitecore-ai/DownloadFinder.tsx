@@ -3,7 +3,7 @@
 import type React from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AppPlaceholder, Text, type Field } from '@sitecore-content-sdk/nextjs';
-import { Download } from 'lucide-react';
+import { Download as DownloadIcon } from 'lucide-react';
 
 import { AIAssistant } from '@/components/sitecore-ai/AIAssistant';
 import { Badge } from '@/components/ui/badge';
@@ -121,7 +121,7 @@ function StepShell({
 }
 
 export const Default: React.FC<DownloadFinderProps> = (props) => {
-  const { rendering, params, fields } = props;
+  const { rendering, params, fields, page } = props;
   const placeholderName = params?.PlaceholderName ?? params?.placeholderName ?? 'download-finder-aux';
 
   const [divisionIndex, setDivisionIndex] = useState(-1);
@@ -132,6 +132,19 @@ export const Default: React.FC<DownloadFinderProps> = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [demoNotice, setDemoNotice] = useState<string | null>(null);
   const skipLoadingRef = useRef(true);
+  const [auxComponentMap, setAuxComponentMap] = useState<
+    typeof import('.sitecore/component-map').default | null
+  >(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    void import('.sitecore/component-map').then((mod) => {
+      if (!cancelled) setAuxComponentMap(mod.default);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     if (skipLoadingRef.current) {
@@ -438,7 +451,7 @@ export const Default: React.FC<DownloadFinderProps> = (props) => {
                                   variant="secondary"
                                   onClick={() => handleDemoDownload(row)}
                                 >
-                                  <Download className="mr-2 h-4 w-4" aria-hidden />
+                                  <DownloadIcon className="mr-2 h-4 w-4" aria-hidden />
                                   Download
                                 </Button>
                               </div>
@@ -487,7 +500,7 @@ export const Default: React.FC<DownloadFinderProps> = (props) => {
                                         variant="outline"
                                         onClick={() => handleDemoDownload(row)}
                                       >
-                                        <Download className="mr-1.5 h-3.5 w-3.5" aria-hidden />
+                                        <DownloadIcon className="mr-1.5 h-3.5 w-3.5" aria-hidden />
                                         Download
                                       </Button>
                                     </TableCell>
@@ -508,7 +521,21 @@ export const Default: React.FC<DownloadFinderProps> = (props) => {
               <p className="text-muted-foreground mb-2 text-xs font-medium tracking-wide uppercase">
                 Authoring zone
               </p>
-              <AppPlaceholder name={placeholderName} rendering={rendering} />
+              {auxComponentMap ? (
+                <AppPlaceholder
+                  name={placeholderName}
+                  rendering={rendering}
+                  page={page}
+                  componentMap={auxComponentMap}
+                />
+              ) : (
+                <div
+                  className="bg-muted/20 text-muted-foreground flex min-h-16 items-center justify-center rounded-md text-sm"
+                  data-placeholder={placeholderName}
+                >
+                  Loading placeholder…
+                </div>
+              )}
             </div>
           </div>
         </div>
