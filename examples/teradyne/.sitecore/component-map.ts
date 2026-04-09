@@ -47,6 +47,8 @@ import * as StructuredData from 'src/components/structured-data/StructuredData';
 import * as SoftwareDetails from 'src/components/software-details/SoftwareDetails';
 import * as SlideCarouseldev from 'src/components/slide-carousel/SlideCarousel.dev';
 import * as slidecarouselprops from 'src/components/slide-carousel/slide-carousel.props';
+import * as DownloadFinder from 'src/components/sitecore-ai/DownloadFinder';
+import * as AIAssistant from 'src/components/sitecore-ai/AIAssistant';
 import * as Video from 'src/components/site-three/Video';
 import * as TextSlider from 'src/components/site-three/TextSlider';
 import * as SignupBanner from 'src/components/site-three/SignupBanner';
@@ -317,6 +319,8 @@ export const componentMap = new Map<string, NextjsContentSdkComponent>([
   ['SoftwareDetails', { ...SoftwareDetails }],
   ['SlideCarousel', { ...SlideCarouseldev }],
   ['slide-carousel', { ...slidecarouselprops }],
+  ['DownloadFinder', { ...DownloadFinder, componentType: 'client' }],
+  ['AIAssistant', { ...AIAssistant, componentType: 'client' }],
   ['Video', { ...Video }],
   ['TextSlider', { ...TextSlider, componentType: 'client' }],
   ['SignupBanner', { ...SignupBanner }],

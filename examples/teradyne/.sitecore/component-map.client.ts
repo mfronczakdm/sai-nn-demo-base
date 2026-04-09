@@ -20,6 +20,8 @@ import * as LinkList from 'src/components/sxa/LinkList';
 import * as ButtonNavigationclient from 'src/components/sxa/ButtonNavigation.client';
 import * as SubscriptionBanner from 'src/components/subscription-banner/SubscriptionBanner';
 import * as SlideCarouseldev from 'src/components/slide-carousel/SlideCarousel.dev';
+import * as DownloadFinder from 'src/components/sitecore-ai/DownloadFinder';
+import * as AIAssistant from 'src/components/sitecore-ai/AIAssistant';
 import * as TextSlider from 'src/components/site-three/TextSlider';
 import * as ProductPageHeader from 'src/components/site-three/ProductPageHeader';
 import * as ProductComparison from 'src/components/site-three/ProductComparison';
@@ -143,6 +145,8 @@ export const componentMap = new Map<string, NextjsContentSdkComponent>([
   ['ButtonNavigation', { ...ButtonNavigationclient }],
   ['SubscriptionBanner', { ...SubscriptionBanner }],
   ['SlideCarousel', { ...SlideCarouseldev }],
+  ['DownloadFinder', { ...DownloadFinder }],
+  ['AIAssistant', { ...AIAssistant }],
   ['TextSlider', { ...TextSlider }],
   ['ProductPageHeader', { ...ProductPageHeader }],
   ['ProductComparison', { ...ProductComparison }],
