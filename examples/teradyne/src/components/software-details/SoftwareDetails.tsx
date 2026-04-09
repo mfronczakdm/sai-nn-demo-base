@@ -3,6 +3,7 @@ import { Text as ContentSdkText, Link as ContentSdkLink, Field, LinkField } from
 import { Share2 } from 'lucide-react';
 import type { ComponentProps } from '@/lib/component-props';
 import { cn } from '@/lib/utils';
+import { NoDataFallback } from '@/utils/NoDataFallback';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
@@ -20,7 +21,7 @@ export interface SoftwareDetailsFields {
 }
 
 export type SoftwareDetailsProps = ComponentProps & {
-  fields: SoftwareDetailsFields;
+  fields?: SoftwareDetailsFields;
 };
 
 function hasTextValue(field: Field<string> | undefined): boolean {
@@ -31,6 +32,36 @@ function hasTextValue(field: Field<string> | undefined): boolean {
 function hasValidDownloadLink(field: LinkField | undefined): boolean {
   const href = field?.value?.href;
   return !!(href && href !== '#' && !href.startsWith('http://#'));
+}
+
+/** Suggested filename for the `download` attribute (same-origin / permissive URLs save locally; cross-origin may still navigate). */
+function getSuggestedDownloadFilename(
+  primaryFile: Field<string> | undefined,
+  link: LinkField | undefined
+): string | undefined {
+  const primary = typeof primaryFile?.value === 'string' ? primaryFile.value.trim() : '';
+  if (primary) {
+    const token = primary.split(/\s+/)[0]?.replace(/[,;)]$/, '') ?? '';
+    if (token && /\.[a-z0-9]{2,10}$/i.test(token)) {
+      return token;
+    }
+  }
+  const href = link?.value?.href;
+  if (!href) return undefined;
+  try {
+    const u = href.startsWith('http') ? new URL(href) : new URL(href, 'https://placeholder.local');
+    const segment = u.pathname.split('/').filter(Boolean).pop();
+    if (segment?.includes('.')) {
+      return decodeURIComponent(segment.split('?')[0] ?? segment);
+    }
+  } catch {
+    const noQuery = href.split('?')[0] ?? '';
+    const segment = noQuery.split('/').filter(Boolean).pop();
+    if (segment?.includes('.')) {
+      return decodeURIComponent(segment);
+    }
+  }
+  return undefined;
 }
 
 function SectionTitle({
@@ -69,10 +100,15 @@ function MetaRow({ label, field }: { label: string; field: Field<string> | undef
  * Server-safe: no data fetching; uses Content SDK `Text` and `Link` for field rendering.
  */
 export const Default: React.FC<SoftwareDetailsProps> = ({ fields, params }) => {
+  if (!fields) {
+    return <NoDataFallback componentName="SoftwareDetails" />;
+  }
+
   const { ProductNumber, ProductType, ContentType, SoftwareVersion, SoftwareDescription, PrimaryFile, RelevantFiles, DownloadLink } =
-    fields ?? {};
+    fields;
 
   const showRelevantFallback = !hasTextValue(RelevantFiles);
+  const downloadName = getSuggestedDownloadFilename(PrimaryFile, DownloadLink);
 
   return (
     <section
@@ -101,9 +137,6 @@ export const Default: React.FC<SoftwareDetailsProps> = ({ fields, params }) => {
               className="border-neutral-300 bg-white shrink-0 hover:bg-neutral-100"
               aria-label="Share (coming soon)"
               title="Share (placeholder)"
-              onClick={() => {
-                /* Intentionally non-functional placeholder */
-              }}
             >
               <Share2 className="size-4 opacity-70" aria-hidden />
             </Button>
@@ -158,6 +191,7 @@ export const Default: React.FC<SoftwareDetailsProps> = ({ fields, params }) => {
                           prefetch={false}
                           aria-label="Download primary file"
                           className="no-underline"
+                          download={downloadName ?? true}
                         >
                           Download
                         </ContentSdkLink>
