@@ -4,6 +4,7 @@ import * as React from 'react';
 import { Filter, Search as SearchIcon, Sparkles } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import type { ComponentProps } from '@/lib/component-props';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
@@ -357,3 +358,14 @@ export function SearchResultsPage({ initialQuery = 'thermal calibration', classN
     </div>
   );
 }
+
+/**
+ * Sitecore Content SDK default rendering binding. The generated component map resolves
+ * the `Default` export when this component is placed on a page; a named-only export can
+ * surface as a non-callable module object in `ClientComponentWrapper`.
+ */
+export const Default: React.FC<ComponentProps & SearchResultsPageProps> = (props) => (
+  <SearchResultsPage initialQuery={props.initialQuery} className={props.className} />
+);
+
+export default SearchResultsPage;
