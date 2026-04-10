@@ -113,6 +113,12 @@ import * as ZipcodeSearchFormdev from 'src/components/forms/zipcode/ZipcodeSearc
 import * as SubmitInfoFormdev from 'src/components/forms/submitinfo/SubmitInfoForm.dev';
 import * as EmailSignupFormdev from 'src/components/forms/email/EmailSignupForm.dev';
 import * as floatingdockdev from 'src/components/floating-dock/floating-dock.dev';
+import * as SortDropdown from 'src/components/enterprise-search-results/SortDropdown';
+import * as SearchResultsPagination from 'src/components/enterprise-search-results/SearchResultsPagination';
+import * as SearchResultsPage from 'src/components/enterprise-search-results/SearchResultsPage';
+import * as SearchBar from 'src/components/enterprise-search-results/SearchBar';
+import * as ResultCard from 'src/components/enterprise-search-results/ResultCard';
+import * as FiltersSidebar from 'src/components/enterprise-search-results/FiltersSidebar';
 import * as ProductsSection from 'src/components/component-library/ProductsSection';
 import * as Header from 'src/components/component-library/Header';
 import * as FeaturesSection from 'src/components/component-library/FeaturesSection';
@@ -235,6 +241,12 @@ export const componentMap = new Map<string, NextjsContentSdkComponent>([
   ['SubmitInfoForm', { ...SubmitInfoFormdev }],
   ['EmailSignupForm', { ...EmailSignupFormdev }],
   ['floating-dock', { ...floatingdockdev }],
+  ['SortDropdown', { ...SortDropdown }],
+  ['SearchResultsPagination', { ...SearchResultsPagination }],
+  ['SearchResultsPage', { ...SearchResultsPage }],
+  ['SearchBar', { ...SearchBar }],
+  ['ResultCard', { ...ResultCard }],
+  ['FiltersSidebar', { ...FiltersSidebar }],
   ['ProductsSection', { ...ProductsSection }],
   ['Header', { ...Header }],
   ['FeaturesSection', { ...FeaturesSection }],

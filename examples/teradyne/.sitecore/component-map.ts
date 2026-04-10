@@ -219,6 +219,15 @@ import * as FooterNavigationCalloutdev from 'src/components/footer-navigation-ca
 import * as footernavigationcalloutprops from 'src/components/footer-navigation-callout/footer-navigation-callout.props';
 import * as floatingdockdev from 'src/components/floating-dock/floating-dock.dev';
 import * as Flexdev from 'src/components/flex/Flex.dev';
+import * as types from 'src/components/enterprise-search-results/types';
+import * as SortDropdown from 'src/components/enterprise-search-results/SortDropdown';
+import * as SearchResultsPagination from 'src/components/enterprise-search-results/SearchResultsPagination';
+import * as SearchResultsPage from 'src/components/enterprise-search-results/SearchResultsPage';
+import * as SearchBar from 'src/components/enterprise-search-results/SearchBar';
+import * as ResultCard from 'src/components/enterprise-search-results/ResultCard';
+import * as mockdata from 'src/components/enterprise-search-results/mock-data';
+import * as highlightmatch from 'src/components/enterprise-search-results/highlight-match';
+import * as FiltersSidebar from 'src/components/enterprise-search-results/FiltersSidebar';
 import * as CtaBanner from 'src/components/cta-banner/CtaBanner';
 import * as ctabannerprops from 'src/components/cta-banner/cta-banner.props';
 import * as ContentSdkRichText from 'src/components/content-sdk-rich-text/ContentSdkRichText';
@@ -482,6 +491,15 @@ export const componentMap = new Map<string, NextjsContentSdkComponent>([
   ['footer-navigation-callout', { ...footernavigationcalloutprops }],
   ['floating-dock', { ...floatingdockdev }],
   ['Flex', { ...Flexdev }],
+  ['types', { ...types }],
+  ['SortDropdown', { ...SortDropdown, componentType: 'client' }],
+  ['SearchResultsPagination', { ...SearchResultsPagination, componentType: 'client' }],
+  ['SearchResultsPage', { ...SearchResultsPage, componentType: 'client' }],
+  ['SearchBar', { ...SearchBar, componentType: 'client' }],
+  ['ResultCard', { ...ResultCard, componentType: 'client' }],
+  ['mock-data', { ...mockdata }],
+  ['highlight-match', { ...highlightmatch }],
+  ['FiltersSidebar', { ...FiltersSidebar, componentType: 'client' }],
   ['CtaBanner', { ...CtaBanner }],
   ['cta-banner', { ...ctabannerprops }],
   ['ContentSdkRichText', { ...ContentSdkRichText }],
