@@ -228,6 +228,7 @@ import * as ResultCard from 'src/components/enterprise-search-results/ResultCard
 import * as mockdata from 'src/components/enterprise-search-results/mock-data';
 import * as highlightmatch from 'src/components/enterprise-search-results/highlight-match';
 import * as FiltersSidebar from 'src/components/enterprise-search-results/FiltersSidebar';
+import * as DownloadHub from 'src/components/download-hub/DownloadHub';
 import * as CtaBanner from 'src/components/cta-banner/CtaBanner';
 import * as ctabannerprops from 'src/components/cta-banner/cta-banner.props';
 import * as ContentSdkRichText from 'src/components/content-sdk-rich-text/ContentSdkRichText';
@@ -500,6 +501,7 @@ export const componentMap = new Map<string, NextjsContentSdkComponent>([
   ['mock-data', { ...mockdata }],
   ['highlight-match', { ...highlightmatch }],
   ['FiltersSidebar', { ...FiltersSidebar, componentType: 'client' }],
+  ['DownloadHub', { ...DownloadHub, componentType: 'client' }],
   ['CtaBanner', { ...CtaBanner }],
   ['cta-banner', { ...ctabannerprops }],
   ['ContentSdkRichText', { ...ContentSdkRichText }],

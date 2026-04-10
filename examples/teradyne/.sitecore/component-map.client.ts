@@ -119,6 +119,7 @@ import * as SearchResultsPage from 'src/components/enterprise-search-results/Sea
 import * as SearchBar from 'src/components/enterprise-search-results/SearchBar';
 import * as ResultCard from 'src/components/enterprise-search-results/ResultCard';
 import * as FiltersSidebar from 'src/components/enterprise-search-results/FiltersSidebar';
+import * as DownloadHub from 'src/components/download-hub/DownloadHub';
 import * as ProductsSection from 'src/components/component-library/ProductsSection';
 import * as Header from 'src/components/component-library/Header';
 import * as FeaturesSection from 'src/components/component-library/FeaturesSection';
@@ -247,6 +248,7 @@ export const componentMap = new Map<string, NextjsContentSdkComponent>([
   ['SearchBar', { ...SearchBar }],
   ['ResultCard', { ...ResultCard }],
   ['FiltersSidebar', { ...FiltersSidebar }],
+  ['DownloadHub', { ...DownloadHub }],
   ['ProductsSection', { ...ProductsSection }],
   ['Header', { ...Header }],
   ['FeaturesSection', { ...FeaturesSection }],
