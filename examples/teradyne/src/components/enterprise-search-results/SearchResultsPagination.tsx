@@ -17,7 +17,7 @@ function slidingWindow(page: number, pageCount: number, width = 5): number[] {
   if (pageCount <= 0) return [];
   const half = Math.floor(width / 2);
   let start = Math.max(1, page - half);
-  let end = Math.min(pageCount, start + width - 1);
+  const end = Math.min(pageCount, start + width - 1);
   start = Math.max(1, end - width + 1);
   return Array.from({ length: end - start + 1 }, (_, i) => start + i);
 }
