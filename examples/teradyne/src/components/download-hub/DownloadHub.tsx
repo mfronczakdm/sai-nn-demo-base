@@ -189,7 +189,8 @@ export function DownloadCard({ asset, onDownload, style, className }: DownloadCa
         'group relative flex h-full flex-col overflow-hidden rounded-2xl border bg-card/80 shadow-sm backdrop-blur-sm transition-all duration-300',
         'hover:-translate-y-0.5 hover:scale-[1.01] hover:shadow-lg',
         asset.isFeatured &&
-          'border-primary/25 bg-gradient-to-b from-primary/[0.06] to-card ring-1 ring-primary/15'
+          'border-primary/25 bg-gradient-to-b from-primary/[0.06] to-card ring-1 ring-primary/15',
+        className
       )}
     >
       {asset.isFeatured && (
