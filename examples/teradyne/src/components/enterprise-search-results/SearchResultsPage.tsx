@@ -3,6 +3,8 @@
 import * as React from 'react';
 import { Filter, Search as SearchIcon, Sparkles } from 'lucide-react';
 
+import { useDemoPersona } from '@/hooks/useDemoPersona';
+import type { DemoPersona } from '@/lib/demo-auth';
 import { cn } from '@/lib/utils';
 import type { ComponentProps } from '@/lib/component-props';
 import { Button } from '@/components/ui/button';
@@ -11,7 +13,7 @@ import { Separator } from '@/components/ui/separator';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Skeleton } from '@/components/ui/skeleton';
 import { FiltersSidebar } from './FiltersSidebar';
-import { MOCK_SEARCH_RESULTS } from './mock-data';
+import { getMockSearchResultsForPersona } from './mock-data';
 import { ResultCard } from './ResultCard';
 import { SearchBar } from './SearchBar';
 import { SearchResultsPagination } from './SearchResultsPagination';
@@ -31,6 +33,9 @@ const DID_YOU_MEAN: Record<string, string> = {
   'thermaly calibration': 'thermal calibration',
   'thermal calibretion': 'thermal calibration',
   'therml calibration': 'thermal calibration',
+  'collaberative robotics lab': 'collaborative robotics lab',
+  'collaborative robotiks lab': 'collaborative robotics lab',
+  'colab robotics lab': 'collaborative robotics lab',
 };
 
 function emptyFilterState(): SearchFilterState {
@@ -128,8 +133,23 @@ function ResultsSkeleton({ count = 5 }: { count?: number }) {
   );
 }
 
-function AiAnswerSummary({ query }: { query: string }) {
+function AiAnswerSummary({ query, persona }: { query: string; persona: DemoPersona }) {
   const q = query.trim() || 'your search';
+  const body =
+    persona === 'student' ? (
+      <>
+        Top matches for <span className="text-foreground font-medium">“{q}”</span> highlight UR5e teaching labs,
+        MiR mobile robot coursework, and IG-XL homework-scale patterns. Start with recommended guides, then narrow
+        by tags or content type for capstone and co-op prep.
+      </>
+    ) : (
+      <>
+        Top matches for <span className="text-foreground font-medium">“{q}”</span> emphasize calibration
+        procedures on UltraFLEX, thermal verification cadence, and diagnostics tied to signal integrity. Start with
+        the recommended guides, then narrow by product line or content type using filters.
+      </>
+    );
+
   return (
     <Card className="border-violet-200/80 bg-gradient-to-br from-violet-50/90 to-background dark:border-violet-900/50 dark:from-violet-950/40">
       <CardContent className="flex gap-3 p-4 sm:p-5">
@@ -138,11 +158,7 @@ function AiAnswerSummary({ query }: { query: string }) {
         </div>
         <div className="min-w-0 space-y-1">
           <p className="text-violet-950 dark:text-violet-100 text-sm font-semibold">AI-assisted summary</p>
-          <p className="text-muted-foreground text-sm leading-relaxed">
-            Top matches for <span className="text-foreground font-medium">“{q}”</span> emphasize calibration
-            procedures on UltraFLEX, thermal verification cadence, and diagnostics tied to signal integrity. Start
-            with the recommended guides, then narrow by product line or content type using filters.
-          </p>
+          <p className="text-muted-foreground text-sm leading-relaxed">{body}</p>
         </div>
       </CardContent>
     </Card>
@@ -150,18 +166,29 @@ function AiAnswerSummary({ query }: { query: string }) {
 }
 
 export interface SearchResultsPageProps {
-  /** Initial text in the search field (e.g. thermal calibration). */
+  /** Initial text in the search field (e.g. thermal calibration). When omitted, the demo persona picks a default query. */
   initialQuery?: string;
   className?: string;
 }
 
-export function SearchResultsPage({ initialQuery = 'thermal calibration', className }: SearchResultsPageProps) {
-  const [query, setQuery] = React.useState(initialQuery);
+export function SearchResultsPage({ initialQuery, className }: SearchResultsPageProps) {
+  const { persona } = useDemoPersona();
+  const hasCmsQuery = initialQuery != null && initialQuery.trim() !== '';
+  const [query, setQuery] = React.useState(() =>
+    hasCmsQuery ? initialQuery!.trim() : 'thermal calibration'
+  );
   const [sort, setSort] = React.useState<SortOption>('relevance');
   const [filters, setFilters] = React.useState<SearchFilterState>(() => emptyFilterState());
   const [page, setPage] = React.useState(1);
   const [isLoading, setIsLoading] = React.useState(true);
   const [mobileFiltersOpen, setMobileFiltersOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    if (hasCmsQuery) {
+      return;
+    }
+    setQuery(persona === 'student' ? 'collaborative robotics lab' : 'thermal calibration');
+  }, [persona, hasCmsQuery]);
 
   const toggleContentType = React.useCallback((value: ContentTypeFilter) => {
     setFilters((prev) => {
@@ -202,9 +229,11 @@ export function SearchResultsPage({ initialQuery = 'thermal calibration', classN
     setFilters(emptyFilterState());
   }, []);
 
+  const mockResults = React.useMemo(() => getMockSearchResultsForPersona(persona), [persona]);
+
   const filtered = React.useMemo(
-    () => sortItems(applyFilters(MOCK_SEARCH_RESULTS, query, filters), sort),
-    [query, filters, sort]
+    () => sortItems(applyFilters(mockResults, query, filters), sort),
+    [mockResults, query, filters, sort]
   );
 
   const total = filtered.length;
@@ -251,7 +280,9 @@ export function SearchResultsPage({ initialQuery = 'thermal calibration', classN
           <div>
             <h1 className="text-foreground text-2xl font-semibold tracking-tight sm:text-3xl">Search</h1>
             <p className="text-muted-foreground mt-1 text-sm">
-              Enterprise knowledge portal — articles, PDFs, videos, and guides.
+              {persona === 'student'
+                ? 'University & teaching portal — coursework, labs, and career prep resources.'
+                : 'Enterprise knowledge portal — articles, PDFs, videos, and guides.'}
             </p>
           </div>
         </div>
@@ -317,7 +348,7 @@ export function SearchResultsPage({ initialQuery = 'thermal calibration', classN
               </div>
             </div>
 
-            <AiAnswerSummary query={query} />
+            <AiAnswerSummary query={query} persona={persona} />
 
             <Separator className="opacity-60" />
 

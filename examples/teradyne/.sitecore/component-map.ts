@@ -226,6 +226,7 @@ import * as SearchResultsPage from 'src/components/enterprise-search-results/Sea
 import * as SearchBar from 'src/components/enterprise-search-results/SearchBar';
 import * as ResultCard from 'src/components/enterprise-search-results/ResultCard';
 import * as mockdata from 'src/components/enterprise-search-results/mock-data';
+import * as mockdatastudent from 'src/components/enterprise-search-results/mock-data-student';
 import * as highlightmatch from 'src/components/enterprise-search-results/highlight-match';
 import * as FiltersSidebar from 'src/components/enterprise-search-results/FiltersSidebar';
 import * as DownloadHub from 'src/components/download-hub/DownloadHub';
@@ -499,6 +500,7 @@ export const componentMap = new Map<string, NextjsContentSdkComponent>([
   ['SearchBar', { ...SearchBar, componentType: 'client' }],
   ['ResultCard', { ...ResultCard, componentType: 'client' }],
   ['mock-data', { ...mockdata }],
+  ['mock-data-student', { ...mockdatastudent }],
   ['highlight-match', { ...highlightmatch }],
   ['FiltersSidebar', { ...FiltersSidebar, componentType: 'client' }],
   ['DownloadHub', { ...DownloadHub, componentType: 'client' }],

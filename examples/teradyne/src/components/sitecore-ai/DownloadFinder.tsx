@@ -34,6 +34,11 @@ import {
   type MatchTarget,
   parsePreferredDownloadType,
 } from '@/data/teradyne-products';
+import { useDemoPersona } from '@/hooks/useDemoPersona';
+import {
+  getDemoDownloadFinderSelection,
+  getDemoPersonaForEmail,
+} from '@/lib/demo-auth';
 import type { ComponentProps } from '@/lib/component-props';
 import { cn } from '@/lib/utils';
 
@@ -123,6 +128,7 @@ function StepShell({
 export const Default: React.FC<DownloadFinderProps> = (props) => {
   const { rendering, params, fields, page } = props;
   const placeholderName = params?.PlaceholderName ?? params?.placeholderName ?? 'download-finder-aux';
+  const { email } = useDemoPersona();
 
   const [divisionIndex, setDivisionIndex] = useState(-1);
   const [categoryIndex, setCategoryIndex] = useState(-1);
@@ -135,6 +141,20 @@ export const Default: React.FC<DownloadFinderProps> = (props) => {
   const [auxComponentMap, setAuxComponentMap] = useState<
     typeof import('.sitecore/component-map').default | null
   >(null);
+
+  useEffect(() => {
+    if (!email) {
+      setDivisionIndex(-1);
+      setCategoryIndex(-1);
+      setProductIndex(-1);
+      return;
+    }
+    const persona = getDemoPersonaForEmail(email);
+    const sel = getDemoDownloadFinderSelection(persona);
+    setDivisionIndex(sel.divisionIndex);
+    setCategoryIndex(sel.categoryIndex);
+    setProductIndex(sel.productIndex);
+  }, [email]);
 
   useEffect(() => {
     let cancelled = false;
@@ -236,6 +256,16 @@ export const Default: React.FC<DownloadFinderProps> = (props) => {
     >
       <div className="mx-auto max-w-7xl px-4 py-8 md:py-10">
         <header className="mb-8 space-y-2">
+          {email ? (
+            <p
+              className="bg-muted/50 text-muted-foreground max-w-3xl rounded-md border px-3 py-2 text-sm"
+              role="status"
+            >
+              {getDemoPersonaForEmail(email) === 'student'
+                ? 'Demo profile: university learner — a collaborative robotics teaching path is pre-selected (UR5e). Switch to demo@sitecore.com after signing in to see the enterprise UltraFLEX path.'
+                : 'Demo profile: enterprise test engineering — an UltraFLEX path is pre-selected. Sign in as demo2@sitecore.com to see the university robotics teaching path.'}
+            </p>
+          ) : null}
           {titleField?.value ? (
             <Text
               field={titleField}

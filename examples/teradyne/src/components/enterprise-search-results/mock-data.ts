@@ -1,4 +1,7 @@
+import type { DemoPersona } from '@/lib/demo-auth';
+
 import type { SearchResultItem } from './types';
+import { MOCK_SEARCH_RESULTS_STUDENT } from './mock-data-student';
 
 /** ~28 realistic portal results for demo filtering and pagination. */
 export const MOCK_SEARCH_RESULTS: SearchResultItem[] = [
@@ -395,3 +398,7 @@ export const MOCK_SEARCH_RESULTS: SearchResultItem[] = [
     relevance: 44,
   },
 ];
+
+export function getMockSearchResultsForPersona(persona: DemoPersona): SearchResultItem[] {
+  return persona === 'student' ? MOCK_SEARCH_RESULTS_STUDENT : MOCK_SEARCH_RESULTS;
+}

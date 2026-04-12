@@ -21,12 +21,18 @@ import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 
 import type { LoginFormProps } from './login-form.props';
+import {
+  DEMO2_LOGIN_EMAIL,
+  DEMO_LOGIN_EMAIL,
+  DEMO_LOGIN_PASSWORD,
+  setDemoUserEmail,
+  validateDemoLogin,
+} from '@/lib/demo-auth';
 
 export type { LoginFormProps, LoginFormSuccessBehavior } from './login-form.props';
 
-/** Demo credentials — frontend only, not a real auth system. */
-export const DEMO_LOGIN_EMAIL = 'demo@sitecore.com';
-export const DEMO_LOGIN_PASSWORD = 'password';
+/** Demo credentials — frontend only, not a real auth system. Re-exported from `@/lib/demo-auth`. */
+export { DEMO2_LOGIN_EMAIL, DEMO_LOGIN_EMAIL, DEMO_LOGIN_PASSWORD } from '@/lib/demo-auth';
 
 const FAKE_AUTH_DELAY_MIN_MS = 800;
 const FAKE_AUTH_DELAY_MAX_MS = 1200;
@@ -113,14 +119,12 @@ export const Default: React.FC<LoginFormProps> = (props) => {
     try {
       await sleep(randomAuthDelayMs());
 
-      const isValid =
-        trimmedEmail === DEMO_LOGIN_EMAIL && trimmedPassword === DEMO_LOGIN_PASSWORD;
-
-      if (!isValid) {
+      if (!validateDemoLogin(trimmedEmail, trimmedPassword)) {
         setFormError(invalidMessage);
         return;
       }
 
+      setDemoUserEmail(trimmedEmail);
       router.push('/');
       return;
     } finally {
@@ -242,7 +246,8 @@ export const Default: React.FC<LoginFormProps> = (props) => {
               ) : (
                 <>
                   {DEFAULT_DEMO_HINT_PREFIX}{' '}
-                  <span className="font-mono">{DEMO_LOGIN_EMAIL}</span> /{' '}
+                  <span className="font-mono">{DEMO_LOGIN_EMAIL}</span> or{' '}
+                  <span className="font-mono">{DEMO2_LOGIN_EMAIL}</span> — password{' '}
                   <span className="font-mono">{DEMO_LOGIN_PASSWORD}</span>
                 </>
               )}

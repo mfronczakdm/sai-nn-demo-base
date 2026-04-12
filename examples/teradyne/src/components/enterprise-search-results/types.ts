@@ -63,4 +63,6 @@ export const ALL_TAG_OPTIONS = [
   'Diagnostics',
   'Best practices',
   'Release notes',
+  'UR5e',
+  'MiR',
 ] as const;
