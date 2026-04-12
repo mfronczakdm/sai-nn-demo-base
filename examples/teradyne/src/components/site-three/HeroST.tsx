@@ -82,7 +82,13 @@ export const Default = (props: PageHeaderSTProps) => {
               : 'lg:w-2/3 lg:min-h-[34rem]'
           )}
         >
-          <div className={cn(!isGradientOnly && 'lg:max-w-3xl')}>
+          <div
+            className={cn(
+              !isGradientOnly && 'lg:max-w-3xl',
+              /* Default gradient: Sitecore Text often sets text-foreground on inner nodes — force white on headings only (not sibling CTAs). */
+              isGradientOnly && '[&_h1]:!text-white [&_h1_*]:!text-white'
+            )}
+          >
             <h1 className="text-xl lg:text-3xl pb-3">
               <ContentSdkText
                 field={props?.fields?.Eyebrow}
@@ -170,7 +176,13 @@ export const Right = (props: PageHeaderSTProps) => {
               : 'lg:w-2/3 lg:min-h-[34rem]'
           )}
         >
-          <div className={cn('text-right', !isGradientOnly && 'lg:max-w-3xl lg:ml-auto')}>
+          <div
+            className={cn(
+              'text-right',
+              !isGradientOnly && 'lg:max-w-3xl lg:ml-auto',
+              isGradientOnly && '[&_h1]:!text-white [&_h1_*]:!text-white'
+            )}
+          >
             <h1 className="text-xl lg:text-3xl pb-3">
               <ContentSdkText
                 field={props?.fields?.Eyebrow}
@@ -256,7 +268,12 @@ export const Centered = (props: PageHeaderSTProps) => {
               : 'lg:relative lg:left-1/6 lg:w-2/3 lg:min-h-[34rem]'
           )}
         >
-          <div className={cn(!isGradientOnly && 'lg:max-w-3xl lg:mx-auto')}>
+          <div
+            className={cn(
+              !isGradientOnly && 'lg:max-w-3xl lg:mx-auto',
+              isGradientOnly && '[&_h1]:!text-white [&_h1_*]:!text-white'
+            )}
+          >
             <h1 className="text-xl lg:text-3xl pb-3">
               <ContentSdkText
                 field={props?.fields?.Eyebrow}
@@ -324,7 +341,8 @@ export const SplitScreen = (props: PageHeaderSTProps) => {
           className={cn(
             'p-6 lg:p-10 w-full max-w-4xl mx-auto',
             !isGradientOnly && 'lg:basis-full lg:self-center',
-            solid.wrapper
+            solid.wrapper,
+            isGradientOnly && '[&_h1]:!text-white [&_h1_*]:!text-white'
           )}
         >
           <h1 className="text-xl lg:text-3xl pb-3">
@@ -395,7 +413,8 @@ export const Stacked = (props: PageHeaderSTProps) => {
             'relative z-20 px-6 py-8',
             !isGradientOnly && 'lg:w-1/2 bg-primary',
             isGradientOnly && 'max-w-4xl w-full text-center',
-            solid.wrapper
+            solid.wrapper,
+            isGradientOnly && '[&_h1]:!text-white [&_h1_*]:!text-white'
           )}
         >
           <h1 className="text-xl lg:text-3xl pb-3">
