@@ -31,6 +31,12 @@ const nextConfig: NextConfig = {
         hostname: 'xmc-*.**',
         port: '',
       },
+      // Content Hub / sandbox DAM and media (e.g. demo-generic.sitecoresandbox.cloud)
+      {
+        protocol: 'https',
+        hostname: '**.sitecoresandbox.cloud',
+        port: '',
+      },
     ],
     // Optimize image sizes for responsive loading
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
