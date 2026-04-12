@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 import { Text, useSitecore } from '@sitecore-content-sdk/nextjs';
@@ -20,7 +20,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 
-import type { LoginFormProps, LoginFormSuccessBehavior } from './login-form.props';
+import type { LoginFormProps } from './login-form.props';
 
 export type { LoginFormProps, LoginFormSuccessBehavior } from './login-form.props';
 
@@ -53,19 +53,12 @@ function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-function resolveSuccessBehavior(params: LoginFormProps['params']): LoginFormSuccessBehavior {
-  const raw = params?.SuccessBehavior ?? params?.successBehavior;
-  return raw === 'redirect-home' ? 'redirect-home' : 'inline-message';
-}
-
 /** Sitecore / SitecoreAI rendering entry — wire this component in your rendering host. */
 export const Default: React.FC<LoginFormProps> = (props) => {
   const { fields, params } = props;
   const router = useRouter();
   const { page } = useSitecore();
   const isEditing = page.mode.isEditing;
-
-  const successBehavior = useMemo(() => resolveSuccessBehavior(params), [params]);
 
   const titleField = fields?.title;
   const descriptionField = fields?.description;
@@ -128,16 +121,8 @@ export const Default: React.FC<LoginFormProps> = (props) => {
         return;
       }
 
-      if (successBehavior === 'redirect-home') {
-        router.push('/');
-        return;
-      }
-
-      setSuccessMessage(
-        rememberMe
-          ? 'Signed in successfully. (Remember me is checked — not persisted; demo only.)'
-          : 'Signed in successfully.'
-      );
+      router.push('/');
+      return;
     } finally {
       setIsLoading(false);
     }
