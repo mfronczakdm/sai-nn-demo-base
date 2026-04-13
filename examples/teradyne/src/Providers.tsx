@@ -9,6 +9,7 @@ import {
 import scConfig from 'sitecore.config';
 import components from '.sitecore/component-map.client';
 import { ThemeProvider } from '@/components/theme-provider/theme-provider.dev';
+import { AuthProvider } from '@/contexts/AuthContext';
 import { VideoProvider } from './contexts/VideoContext';
 
 export default function Providers({
@@ -36,7 +37,7 @@ export default function Providers({
               enableSystem={false}
               disableTransitionOnChange
             >
-              {children}
+              <AuthProvider>{children}</AuthProvider>
             </ThemeProvider>
           </VideoProvider>
         </ComponentPropsContext>

@@ -1,6 +1,9 @@
 import type { NextConfig } from 'next';
 import createNextIntlPlugin from 'next-intl/plugin';
 
+const defaultSite = process.env.NEXT_PUBLIC_DEFAULT_SITE_NAME;
+const defaultLanguage = process.env.NEXT_PUBLIC_DEFAULT_LANGUAGE || 'en';
+
 const nextConfig: NextConfig = {
   // Allow specifying a distinct distDir when concurrently running app in a container
   distDir: process.env.NEXTJS_DIST_DIR || '.next',
@@ -49,7 +52,20 @@ const nextConfig: NextConfig = {
   
   // Sitemap, robots, and AI JSON endpoints via rewrites; handlers live under app/api/
   rewrites: async () => {
+    const loginRewrite =
+      defaultSite != null && defaultSite.length > 0
+        ? [
+            {
+              // Short URL for auth header / bookmarks; resolves to Sitecore login item.
+              source: '/login',
+              destination: `/${defaultSite}/${defaultLanguage}/login`,
+              locale: false,
+            },
+          ]
+        : [];
+
     return [
+      ...loginRewrite,
       {
         // sitemap.xml serves the main sitemap
         source: '/sitemap.xml',

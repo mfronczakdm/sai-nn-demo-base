@@ -32,6 +32,12 @@ export const DEMO2_LOGIN_EMAIL = 'demo2@sitecore.com';
 
 export const DEMO_LOGIN_PASSWORD = 'password';
 
+/** Demo session user surfaced in UI (auth header, etc.). */
+export type DemoUser = {
+  email: string;
+  displayName: string;
+};
+
 export type DemoPersona = 'engineer' | 'student';
 
 const DEMO_EMAILS = new Set([DEMO_LOGIN_EMAIL.toLowerCase(), DEMO2_LOGIN_EMAIL.toLowerCase()]);
@@ -48,6 +54,25 @@ export function getDemoPersonaForEmail(email: string | null | undefined): DemoPe
 export function getDemoUserEmail(): string | null {
   if (typeof window === 'undefined') return null;
   return window.localStorage.getItem(DEMO_AUTH_STORAGE_KEY);
+}
+
+/** Hardcoded friendly names for the two demo accounts. */
+export function getDemoDisplayNameForEmail(email: string): string {
+  const e = email.trim().toLowerCase();
+  if (e === DEMO_LOGIN_EMAIL.toLowerCase()) return 'Demo User';
+  if (e === DEMO2_LOGIN_EMAIL.toLowerCase()) return 'Demo User 2';
+  const local = e.split('@')[0] || 'User';
+  return local
+    .split(/[._-]+/)
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
+    .join(' ');
+}
+
+export function readDemoUserFromStorage(): DemoUser | null {
+  const email = getDemoUserEmail();
+  if (!email) return null;
+  return { email, displayName: getDemoDisplayNameForEmail(email) };
 }
 
 export function setDemoUserEmail(email: string): void {

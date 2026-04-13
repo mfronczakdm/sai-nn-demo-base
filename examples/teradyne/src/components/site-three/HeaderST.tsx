@@ -13,6 +13,7 @@ import { SearchBox } from './non-sitecore/SearchBox';
 import { ComponentProps } from 'lib/component-props';
 import componentMap from '.sitecore/component-map';
 import { MobileMenuWrapper } from './MobileMenuWrapper';
+import { AuthHeader } from '@/components/auth-header/AuthHeader';
 
 interface Fields {
   Logo: ImageField;
@@ -92,6 +93,9 @@ export const Default = (props: HeaderSTProps) => {
                   <div className="w-full">
                     <hr className="w-full border-border" />
                     <ul className="text-center">
+                      <li className="flex justify-center py-3">
+                        <AuthHeader />
+                      </li>
                       <li>
                         <ContentSdkLink
                           field={fields?.SupportLink}
@@ -103,6 +107,9 @@ export const Default = (props: HeaderSTProps) => {
                   </div>
                 </div>
               </MobileMenuWrapper>
+              <li className="hidden items-center lg:flex">
+                <AuthHeader />
+              </li>
               <li>
                 {props.params.showMiniCart ? (
                   <MiniCart cartLink={fields?.CartLink} />

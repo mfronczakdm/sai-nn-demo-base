@@ -276,6 +276,7 @@ import * as ButtonComponent from 'src/components/button-component/ButtonComponen
 import * as Breadcrumbs from 'src/components/breadcrumbs/Breadcrumbs';
 import * as breadcrumbsprops from 'src/components/breadcrumbs/breadcrumbs.props';
 import * as BackgroundThumbnaildev from 'src/components/background-thumbnail/BackgroundThumbnail.dev';
+import * as AuthHeader from 'src/components/auth-header/AuthHeader';
 import * as ArticleHeader from 'src/components/article-header/ArticleHeader';
 import * as articleheaderprops from 'src/components/article-header/article-header.props';
 import * as AnimatedSectiondev from 'src/components/animated-section/AnimatedSection.dev';
@@ -549,6 +550,7 @@ export const componentMap = new Map<string, NextjsContentSdkComponent>([
   ['Breadcrumbs', { ...Breadcrumbs }],
   ['breadcrumbs', { ...breadcrumbsprops }],
   ['BackgroundThumbnail', { ...BackgroundThumbnaildev }],
+  ['AuthHeader', { ...AuthHeader, componentType: 'client' }],
   ['ArticleHeader', { ...ArticleHeader, componentType: 'client' }],
   ['article-header', { ...articleheaderprops }],
   ['AnimatedSection', { ...AnimatedSectiondev }],

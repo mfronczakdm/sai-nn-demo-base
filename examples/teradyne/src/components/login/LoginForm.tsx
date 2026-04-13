@@ -21,11 +21,11 @@ import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 
 import type { LoginFormProps } from './login-form.props';
+import { useAuth } from '@/contexts/AuthContext';
 import {
   DEMO2_LOGIN_EMAIL,
   DEMO_LOGIN_EMAIL,
   DEMO_LOGIN_PASSWORD,
-  setDemoUserEmail,
   validateDemoLogin,
 } from '@/lib/demo-auth';
 
@@ -63,6 +63,7 @@ function sleep(ms: number): Promise<void> {
 export const Default: React.FC<LoginFormProps> = (props) => {
   const { fields, params } = props;
   const router = useRouter();
+  const { login } = useAuth();
   const { page } = useSitecore();
   const isEditing = page.mode.isEditing;
 
@@ -124,7 +125,7 @@ export const Default: React.FC<LoginFormProps> = (props) => {
         return;
       }
 
-      setDemoUserEmail(trimmedEmail);
+      login(trimmedEmail);
       router.push('/');
       return;
     } finally {
