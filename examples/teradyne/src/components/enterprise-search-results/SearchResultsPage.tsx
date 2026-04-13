@@ -36,6 +36,8 @@ const DID_YOU_MEAN: Record<string, string> = {
   'collaberative robotics lab': 'collaborative robotics lab',
   'collaborative robotiks lab': 'collaborative robotics lab',
   'colab robotics lab': 'collaborative robotics lab',
+  ur5ee: 'UR5e',
+  'ur 5e': 'UR5e',
 };
 
 function emptyFilterState(): SearchFilterState {
@@ -72,7 +74,7 @@ function queryTokens(query: string): string[] {
 function matchesQuery(item: SearchResultItem, query: string): boolean {
   const tokens = queryTokens(query);
   if (tokens.length === 0) return true;
-  const hay = `${item.title} ${item.snippet}`.toLowerCase();
+  const hay = `${item.title} ${item.snippet} ${item.tags.join(' ')}`.toLowerCase();
   return tokens.every((tok) => hay.includes(tok));
 }
 
@@ -187,7 +189,7 @@ export function SearchResultsPage({ initialQuery, className }: SearchResultsPage
     if (hasCmsQuery) {
       return;
     }
-    setQuery(persona === 'student' ? 'collaborative robotics lab' : 'thermal calibration');
+    setQuery(persona === 'student' ? 'UR5e lab' : 'thermal calibration');
   }, [persona, hasCmsQuery]);
 
   const toggleContentType = React.useCallback((value: ContentTypeFilter) => {
