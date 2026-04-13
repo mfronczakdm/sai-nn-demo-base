@@ -28,12 +28,7 @@ export type AuthContextValue = {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-function getHomeHrefFromWindow(): string {
-  if (typeof window === 'undefined') return '/';
-  const segments = window.location.pathname.split('/').filter(Boolean);
-  if (segments.length >= 2) return `/${segments[0]}/${segments[1]}`;
-  return '/';
-}
+const LOGOUT_REDIRECT = '/login';
 
 export function AuthProvider({ children }: { children: React.ReactNode }): React.ReactNode {
   const router = useRouter();
@@ -57,7 +52,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }): React
 
   const logout = useCallback(() => {
     clearDemoUser();
-    router.push(getHomeHrefFromWindow());
+    router.push(LOGOUT_REDIRECT);
   }, [router]);
 
   const value = useMemo<AuthContextValue>(
