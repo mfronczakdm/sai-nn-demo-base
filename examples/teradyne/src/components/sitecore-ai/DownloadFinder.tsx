@@ -1,7 +1,7 @@
 'use client';
 
 import type React from 'react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { AppPlaceholder, Text, type Field } from '@sitecore-content-sdk/nextjs';
 import { Download as DownloadIcon } from 'lucide-react';
 
@@ -38,6 +38,7 @@ import { useDemoPersona } from '@/hooks/useDemoPersona';
 import {
   getDemoDownloadFinderSelection,
   getDemoPersonaForEmail,
+  STUDENT_DOWNLOAD_DIVISION_INDEX,
 } from '@/lib/demo-auth';
 import type { ComponentProps } from '@/lib/component-props';
 import { cn } from '@/lib/utils';
@@ -54,6 +55,50 @@ function sortDownloads(downloads: DownloadRow[], preferred?: DownloadType): Down
     }
     return TYPE_ORDER.indexOf(a.type) - TYPE_ORDER.indexOf(b.type);
   });
+}
+
+/**
+ * Students only see the robotics teaching slice; keep AI matches inside that portfolio
+ * or fall back to the default UR path.
+ */
+function resolveMatchForStudent(target: MatchTarget): MatchTarget {
+  const robotics = TERADYNE_PORTFOLIO[STUDENT_DOWNLOAD_DIVISION_INDEX];
+  if (target.divisionIndex === STUDENT_DOWNLOAD_DIVISION_INDEX) {
+    return target;
+  }
+
+  const want = target.productName.trim().toLowerCase();
+  for (let ci = 0; ci < robotics.categories.length; ci += 1) {
+    const cat = robotics.categories[ci];
+    for (let pi = 0; pi < cat.products.length; pi += 1) {
+      const prod = cat.products[pi];
+      const n = prod.name.toLowerCase();
+      if (n === want || n.includes(want) || want.includes(n)) {
+        return {
+          divisionIndex: STUDENT_DOWNLOAD_DIVISION_INDEX,
+          categoryIndex: ci,
+          productIndex: pi,
+          score: target.score,
+          productName: prod.name,
+          divisionName: robotics.name,
+          categoryName: cat.name,
+        };
+      }
+    }
+  }
+
+  const def = getDemoDownloadFinderSelection('student');
+  const cat = robotics.categories[def.categoryIndex];
+  const prod = cat.products[def.productIndex];
+  return {
+    divisionIndex: def.divisionIndex,
+    categoryIndex: def.categoryIndex,
+    productIndex: def.productIndex,
+    score: target.score,
+    productName: prod.name,
+    divisionName: robotics.name,
+    categoryName: cat.name,
+  };
 }
 
 function badgeClassForType(t: DownloadType): string {
@@ -128,7 +173,8 @@ function StepShell({
 export const Default: React.FC<DownloadFinderProps> = (props) => {
   const { rendering, params, fields, page } = props;
   const placeholderName = params?.PlaceholderName ?? params?.placeholderName ?? 'download-finder-aux';
-  const { email } = useDemoPersona();
+  const { email, isStudent } = useDemoPersona();
+  const isStudentDownload = isStudent && Boolean(email);
 
   const [divisionIndex, setDivisionIndex] = useState(-1);
   const [categoryIndex, setCategoryIndex] = useState(-1);
@@ -142,7 +188,7 @@ export const Default: React.FC<DownloadFinderProps> = (props) => {
     typeof import('.sitecore/component-map').default | null
   >(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!email) {
       setDivisionIndex(-1);
       setCategoryIndex(-1);
@@ -176,7 +222,15 @@ export const Default: React.FC<DownloadFinderProps> = (props) => {
     return () => window.clearTimeout(t);
   }, [divisionIndex, categoryIndex, productIndex]);
 
-  const division = divisionIndex >= 0 ? TERADYNE_PORTFOLIO[divisionIndex] : undefined;
+  const resolvedDivisionIndex =
+    divisionIndex >= 0
+      ? divisionIndex
+      : isStudentDownload
+        ? STUDENT_DOWNLOAD_DIVISION_INDEX
+        : -1;
+
+  const division =
+    resolvedDivisionIndex >= 0 ? TERADYNE_PORTFOLIO[resolvedDivisionIndex] : undefined;
   const category =
     division && categoryIndex >= 0 ? division.categories[categoryIndex] : undefined;
   const product = category && productIndex >= 0 ? category.products[productIndex] : undefined;
@@ -212,6 +266,9 @@ export const Default: React.FC<DownloadFinderProps> = (props) => {
 
   const handleCategoryChange = (v: string) => {
     handleSelectChange();
+    if (isStudentDownload && divisionIndex < 0) {
+      setDivisionIndex(STUDENT_DOWNLOAD_DIVISION_INDEX);
+    }
     if (v === NONE) {
       setCategoryIndex(-1);
       setProductIndex(-1);
@@ -232,17 +289,26 @@ export const Default: React.FC<DownloadFinderProps> = (props) => {
 
   const handleAIMatch = useCallback(
     (target: MatchTarget, typeHint: ReturnType<typeof parsePreferredDownloadType>) => {
-      setDivisionIndex(target.divisionIndex);
-      setCategoryIndex(target.categoryIndex);
-      setProductIndex(target.productIndex);
+      const resolved = isStudentDownload ? resolveMatchForStudent(target) : target;
+      setDivisionIndex(resolved.divisionIndex);
+      setCategoryIndex(resolved.categoryIndex);
+      setProductIndex(resolved.productIndex);
       setPreferredType(typeHint);
-      setAiHighlight({ division: true, category: true, product: true });
+      setAiHighlight({
+        division: !isStudentDownload,
+        category: true,
+        product: true,
+      });
     },
-    []
+    [isStudentDownload]
   );
 
   const handleDemoDownload = (row: DownloadRow) => {
-    setDemoNotice(`Demo: "${row.name}" (${row.version}) would download in production.`);
+    setDemoNotice(
+      isStudentDownload
+        ? `Demo: "${row.name}" (${row.version}) — in production this would open a student/lab-safe download or UR Academy resource, not a partner entitlement.`
+        : `Demo: "${row.name}" (${row.version}) would download in production.`
+    );
     window.setTimeout(() => setDemoNotice(null), 4500);
   };
 
@@ -262,7 +328,7 @@ export const Default: React.FC<DownloadFinderProps> = (props) => {
               role="status"
             >
               {getDemoPersonaForEmail(email) === 'student'
-                ? 'Demo profile: university learner — a collaborative robotics teaching path is pre-selected (UR5e). Switch to demo@sitecore.com after signing in to see the enterprise UltraFLEX path.'
+                ? 'Demo profile: university / lab learner — teaching-focused cobot & course software (UR5e path pre-selected). No corporate “division” step: browse robotics families only. Sign in as demo@sitecore.com for the enterprise semiconductor path.'
                 : 'Demo profile: enterprise test engineering — an UltraFLEX path is pre-selected. Sign in as demo2@sitecore.com to see the university robotics teaching path.'}
             </p>
           ) : null}
@@ -273,7 +339,9 @@ export const Default: React.FC<DownloadFinderProps> = (props) => {
               className="text-3xl font-semibold tracking-tight md:text-4xl"
             />
           ) : (
-            <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">Download Finder</h1>
+            <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">
+              {isStudentDownload ? 'Lab download finder' : 'Download Finder'}
+            </h1>
           )}
           {subtitleField?.value ? (
             <Text
@@ -281,6 +349,12 @@ export const Default: React.FC<DownloadFinderProps> = (props) => {
               tag="p"
               className="text-muted-foreground max-w-3xl text-base"
             />
+          ) : isStudentDownload ? (
+            <p className="text-muted-foreground max-w-3xl text-base">
+              Choose a robotics teaching area and model for lab software, curriculum-friendly
+              packages, and documentation—typical for a university or training lab (not a
+              corporate partner download portal).
+            </p>
           ) : (
             <p className="text-muted-foreground max-w-3xl text-base">
               Select your division, product family, and platform to view firmware, drivers,
@@ -290,66 +364,80 @@ export const Default: React.FC<DownloadFinderProps> = (props) => {
         </header>
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-10">
-          <div className="lg:col-span-4">
+          <div className="lg:col-span-4 space-y-2">
             <AIAssistant onMatch={handleAIMatch} onClearHighlight={clearHighlight} />
+            {isStudentDownload ? (
+              <p className="text-muted-foreground text-xs leading-relaxed">
+                Lab mode: matches stay in collaborative & mobile robotics teaching products—not
+                semiconductor or defense test systems.
+              </p>
+            ) : null}
           </div>
 
           <div className="space-y-6 lg:col-span-8">
             <div
-              key={`flow-${divisionIndex}-${categoryIndex}-${productIndex}`}
+              key={`flow-${divisionIndex}-${categoryIndex}-${productIndex}-${isStudentDownload ? 's' : 'e'}`}
               className="animate-in fade-in slide-in-from-bottom-2 fill-mode-both space-y-6 duration-300"
             >
-              <StepShell
-                step={1}
-                title="Division"
-                description="Choose your business unit."
-                active={divisionIndex >= 0}
-              >
-                <div className="space-y-2">
-                  <Label htmlFor="df-division">Division</Label>
-                  <Select
-                    value={divisionIndex >= 0 ? String(divisionIndex) : NONE}
-                    onValueChange={handleDivisionChange}
-                  >
-                    <SelectTrigger
-                      id="df-division"
-                      className={cn(
-                        'bg-background w-full',
-                        aiHighlight.division &&
-                          'ring-2 ring-emerald-500/70 ring-offset-2 ring-offset-background'
-                      )}
+              {!isStudentDownload ? (
+                <StepShell
+                  step={1}
+                  title="Division"
+                  description="Choose your business unit."
+                  active={divisionIndex >= 0}
+                >
+                  <div className="space-y-2">
+                    <Label htmlFor="df-division">Division</Label>
+                    <Select
+                      value={divisionIndex >= 0 ? String(divisionIndex) : NONE}
+                      onValueChange={handleDivisionChange}
                     >
-                      <SelectValue placeholder="Select division" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value={NONE}>Select division</SelectItem>
-                      {TERADYNE_PORTFOLIO.map((d, i) => (
-                        <SelectItem key={d.name} value={String(i)}>
-                          {d.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </StepShell>
+                      <SelectTrigger
+                        id="df-division"
+                        className={cn(
+                          'bg-background w-full',
+                          aiHighlight.division &&
+                            'ring-2 ring-emerald-500/70 ring-offset-2 ring-offset-background'
+                        )}
+                      >
+                        <SelectValue placeholder="Select division" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value={NONE}>Select division</SelectItem>
+                        {TERADYNE_PORTFOLIO.map((d, i) => (
+                          <SelectItem key={d.name} value={String(i)}>
+                            {d.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </StepShell>
+              ) : null}
 
               <StepShell
-                step={2}
-                title="Category"
-                description="Narrow down to a solution family."
-                disabled={divisionIndex < 0}
+                step={isStudentDownload ? 1 : 2}
+                title={isStudentDownload ? 'Teaching area' : 'Category'}
+                description={
+                  isStudentDownload
+                    ? 'Pick a robotics track (cobots, AMRs, course software, etc.).'
+                    : 'Narrow down to a solution family.'
+                }
+                disabled={resolvedDivisionIndex < 0}
                 active={categoryIndex >= 0}
               >
                 <div
-                  key={`cat-${divisionIndex}`}
+                  key={`cat-${resolvedDivisionIndex}`}
                   className="animate-in fade-in slide-in-from-left-2 duration-300"
                 >
                   <div className="space-y-2">
-                    <Label htmlFor="df-category">Category</Label>
+                    <Label htmlFor="df-category">
+                      {isStudentDownload ? 'Robotics family' : 'Category'}
+                    </Label>
                     <Select
                       value={categoryIndex >= 0 ? String(categoryIndex) : NONE}
                       onValueChange={handleCategoryChange}
-                      disabled={divisionIndex < 0}
+                      disabled={resolvedDivisionIndex < 0}
                     >
                       <SelectTrigger
                         id="df-category"
@@ -375,18 +463,24 @@ export const Default: React.FC<DownloadFinderProps> = (props) => {
               </StepShell>
 
               <StepShell
-                step={3}
-                title="Product"
-                description="Pick your platform or system."
+                step={isStudentDownload ? 2 : 3}
+                title={isStudentDownload ? 'Model or package' : 'Product'}
+                description={
+                  isStudentDownload
+                    ? 'Choose the robot model, toolkit, or lab software package.'
+                    : 'Pick your platform or system.'
+                }
                 disabled={categoryIndex < 0}
                 active={productIndex >= 0}
               >
                 <div
-                  key={`prod-${divisionIndex}-${categoryIndex}`}
+                  key={`prod-${resolvedDivisionIndex}-${categoryIndex}`}
                   className="animate-in fade-in slide-in-from-left-2 duration-300"
                 >
                   <div className="space-y-2">
-                    <Label htmlFor="df-product">Product</Label>
+                    <Label htmlFor="df-product">
+                      {isStudentDownload ? 'Platform / model' : 'Product'}
+                    </Label>
                     <Select
                       value={productIndex >= 0 ? String(productIndex) : NONE}
                       onValueChange={handleProductChange}
@@ -423,9 +517,17 @@ export const Default: React.FC<DownloadFinderProps> = (props) => {
               >
                 <Card className="border-border/80 overflow-hidden">
                   <CardHeader className="border-border/60 border-b bg-muted/20">
-                    <CardTitle className="text-lg">Downloads</CardTitle>
+                    <CardTitle className="text-lg">
+                      {isStudentDownload ? 'Lab & course materials' : 'Downloads'}
+                    </CardTitle>
                     <CardDescription>
                       {product.name}
+                      {isStudentDownload ? (
+                        <span className="text-muted-foreground mt-1 block text-sm">
+                          Educational / non-production use — versions may differ from partner
+                          portals.
+                        </span>
+                      ) : null}
                       {preferredType && (
                         <span className="text-foreground mt-1 block text-sm font-medium">
                           AI type preference: {preferredType} (sorted first below)
@@ -453,7 +555,7 @@ export const Default: React.FC<DownloadFinderProps> = (props) => {
                       <>
                         <div>
                           <h3 className="mb-3 text-sm font-semibold tracking-wide uppercase">
-                            Recommended downloads
+                            {isStudentDownload ? 'Suggested for your lab' : 'Recommended downloads'}
                           </h3>
                           <div className="grid gap-3 sm:grid-cols-2">
                             {recommended.map((row) => (
@@ -491,7 +593,7 @@ export const Default: React.FC<DownloadFinderProps> = (props) => {
 
                         <div>
                           <h3 className="mb-3 text-sm font-semibold tracking-wide uppercase">
-                            All files
+                            {isStudentDownload ? 'All materials' : 'All files'}
                           </h3>
                           <ScrollArea className="max-h-[min(28rem,55vh)] rounded-md border">
                             <Table>

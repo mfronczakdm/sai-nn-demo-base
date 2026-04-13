@@ -93,10 +93,13 @@ export function validateDemoLogin(email: string, password: string): boolean {
   return isAllowedDemoEmail(e) && password.trim() === DEMO_LOGIN_PASSWORD;
 }
 
+/** Robotics scope in `TERADYNE_PORTFOLIO` — student lab downloads skip division pick UI but use this slice. */
+export const STUDENT_DOWNLOAD_DIVISION_INDEX = 1;
+
 /**
  * Pre-selected Download Finder path per persona (indices into `TERADYNE_PORTFOLIO`).
  * Engineer: Semiconductor Test → Digital & Mixed-Signal SoC Test → UltraFLEX.
- * Student: Robotics → Universal Robots → UR5e.
+ * Student: Robotics → Universal Robots → UR5e (division hidden in UI; index still used for data).
  */
 export function getDemoDownloadFinderSelection(persona: DemoPersona): {
   divisionIndex: number;
@@ -104,7 +107,11 @@ export function getDemoDownloadFinderSelection(persona: DemoPersona): {
   productIndex: number;
 } {
   if (persona === 'student') {
-    return { divisionIndex: 1, categoryIndex: 0, productIndex: 1 };
+    return {
+      divisionIndex: STUDENT_DOWNLOAD_DIVISION_INDEX,
+      categoryIndex: 0,
+      productIndex: 1,
+    };
   }
   return { divisionIndex: 0, categoryIndex: 0, productIndex: 0 };
 }
