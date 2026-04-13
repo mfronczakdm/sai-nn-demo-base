@@ -1,6 +1,13 @@
 import type { NextConfig } from 'next';
 import createNextIntlPlugin from 'next-intl/plugin';
 
+/** Next.js `Rewrite` requires `locale` to be the literal `false`, not `boolean`. */
+type LocaleDisabledRewrite = {
+  source: string;
+  destination: string;
+  locale: false;
+};
+
 const defaultSite = process.env.NEXT_PUBLIC_DEFAULT_SITE_NAME;
 const defaultLanguage = process.env.NEXT_PUBLIC_DEFAULT_LANGUAGE || 'en';
 
@@ -52,7 +59,7 @@ const nextConfig: NextConfig = {
   
   // Sitemap, robots, and AI JSON endpoints via rewrites; handlers live under app/api/
   rewrites: async () => {
-    const loginRewrite =
+    const loginRewrite: LocaleDisabledRewrite[] =
       defaultSite != null && defaultSite.length > 0
         ? [
             {
@@ -64,8 +71,7 @@ const nextConfig: NextConfig = {
           ]
         : [];
 
-    return [
-      ...loginRewrite,
+    const staticRewrites: LocaleDisabledRewrite[] = [
       {
         // sitemap.xml serves the main sitemap
         source: '/sitemap.xml',
@@ -120,6 +126,8 @@ const nextConfig: NextConfig = {
         locale: false,
       },
     ];
+
+    return [...loginRewrite, ...staticRewrites];
   },
 };
 
