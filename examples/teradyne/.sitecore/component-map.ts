@@ -153,6 +153,8 @@ import * as locationsearchprops from 'src/components/location-search/location-se
 import * as locationsearchitemprops from 'src/components/location-search/location-search-item.props';
 import * as GoogleMapdev from 'src/components/location-search/GoogleMap.dev';
 import * as googlemapsprops from 'src/components/location-search/google-maps.props';
+import * as ImageMap from 'src/components/ImageMap/ImageMap';
+import * as imagemapprops from 'src/components/ImageMap/image-map.props';
 import * as ImageGalleryNoSpacingdev from 'src/components/image-gallery/ImageGalleryNoSpacing.dev';
 import * as ImageGalleryGriddev from 'src/components/image-gallery/ImageGalleryGrid.dev';
 import * as ImageGalleryFiftyFiftydev from 'src/components/image-gallery/ImageGalleryFiftyFifty.dev';
@@ -434,6 +436,8 @@ export const componentMap = new Map<string, NextjsContentSdkComponent>([
   ['location-search-item', { ...locationsearchitemprops }],
   ['GoogleMap', { ...GoogleMapdev }],
   ['google-maps', { ...googlemapsprops }],
+  ['ImageMap', { ...ImageMap, componentType: 'client' }],
+  ['image-map', { ...imagemapprops }],
   ['ImageGalleryNoSpacing', { ...ImageGalleryNoSpacingdev }],
   ['ImageGalleryGrid', { ...ImageGalleryGriddev }],
   ['ImageGalleryFiftyFifty', { ...ImageGalleryFiftyFiftydev }],
