@@ -21,15 +21,28 @@ export interface ImageMapFields {
   };
 }
 
+export type ImageMapHotspotField<T> = {
+  jsonValue?: T;
+  value?: T extends LinkField ? string | LinkField['value'] : string;
+};
+
 export type ImageMapHotspotItemProps = {
   id?: string;
   name?: string;
-  Label?: { jsonValue: Field<string> };
-  Link?: { jsonValue: LinkField };
-  'X-pct'?: { jsonValue: Field<string> };
-  'Y-pct'?: { jsonValue: Field<string> };
-  Width?: { jsonValue: Field<string> };
-  Height?: { jsonValue: Field<string> };
+  /** GraphQL / layout service field bag (lowercase matches Edge field aliases). */
+  label?: ImageMapHotspotField<Field<string>>;
+  link?: ImageMapHotspotField<LinkField>;
+  x?: ImageMapHotspotField<Field<string>>;
+  y?: ImageMapHotspotField<Field<string>>;
+  width?: ImageMapHotspotField<Field<string>>;
+  height?: ImageMapHotspotField<Field<string>>;
+  /** PascalCase fallbacks for layout-service payloads. */
+  Label?: ImageMapHotspotField<Field<string>>;
+  Link?: ImageMapHotspotField<LinkField>;
+  X?: ImageMapHotspotField<Field<string>>;
+  Y?: ImageMapHotspotField<Field<string>>;
+  Width?: ImageMapHotspotField<Field<string>>;
+  Height?: ImageMapHotspotField<Field<string>>;
 };
 
 export interface ImageMapProps extends ComponentProps {

@@ -40,6 +40,9 @@ type ResolvedHotspot = {
 type ResolvedLink = {
   href: string;
   linktype: string;
+  title: string;
+  text: string;
+  isExternal: boolean;
 };
 
 type DatasourceShape = NonNullable<ImageMapProps['fields']>['data']['datasource'];
@@ -106,7 +109,13 @@ function readHotspotFieldValue(
   const record = item as Record<string, unknown>;
   for (const key of keys) {
     const raw = record[key];
-    if (raw == null || typeof raw !== 'object') continue;
+    if (raw == null) continue;
+
+    if (typeof raw === 'string' || typeof raw === 'number') {
+      return raw;
+    }
+
+    if (typeof raw !== 'object') continue;
 
     const field = raw as Record<string, unknown>;
     if ('jsonValue' in field) {
@@ -114,35 +123,77 @@ function readHotspotFieldValue(
       if (jsonValue?.value != null) return jsonValue.value;
     }
     if ('value' in field && field.value != null) {
-      return field.value as string | number;
+      const value = field.value;
+      if (typeof value === 'string' || typeof value === 'number') {
+        return value;
+      }
     }
   }
   return undefined;
+}
+
+function getSitecoreLinkAttribute(linkXml: string, attribute: string): string {
+  const match = linkXml.match(new RegExp(`${attribute}="([^"]*)"`, 'i'));
+  return match?.[1]?.trim() ?? '';
+}
+
+/** Edge GraphQL often returns General Link fields as raw `<link .../>` XML in `value`. */
+function parseSitecoreLinkXml(raw: string): LinkField['value'] | undefined {
+  const trimmed = raw.trim();
+  if (!trimmed.startsWith('<link')) return undefined;
+
+  const url = getSitecoreLinkAttribute(trimmed, 'url');
+  const href = getSitecoreLinkAttribute(trimmed, 'href') || url;
+  if (!href || href === 'http://' || href === '#') return undefined;
+
+  return {
+    href,
+    url,
+    text: getSitecoreLinkAttribute(trimmed, 'text'),
+    title: getSitecoreLinkAttribute(trimmed, 'title'),
+    linktype: getSitecoreLinkAttribute(trimmed, 'linktype') || 'internal',
+    target: getSitecoreLinkAttribute(trimmed, 'target'),
+    anchor: getSitecoreLinkAttribute(trimmed, 'anchor'),
+  };
+}
+
+function normalizeLinkField(linkField: LinkField | undefined): LinkField | undefined {
+  if (!linkField) return undefined;
+
+  const value = linkField.value;
+  if (typeof value === 'string') {
+    const parsed = parseSitecoreLinkXml(value);
+    return parsed ? { value: parsed } : undefined;
+  }
+
+  if (!value || typeof value !== 'object') return undefined;
+
+  const record = value as Record<string, unknown>;
+  const href = String(record.href ?? record.url ?? '').trim();
+  if (!href || href === 'http://' || href === '#') return undefined;
+
+  return linkField;
 }
 
 function resolveHotspots(items: ImageMapHotspotItemProps[]): ResolvedHotspot[] {
   const resolved: ResolvedHotspot[] = [];
 
   items.forEach((item, index) => {
-    const left = parsePercentage(readHotspotFieldValue(item, 'X-pct', 'xPct', 'x-pct'));
-    const top = parsePercentage(readHotspotFieldValue(item, 'Y-pct', 'yPct', 'y-pct'));
-    const width = parsePercentage(readHotspotFieldValue(item, 'Width', 'width'));
-    const height = parsePercentage(readHotspotFieldValue(item, 'Height', 'height'));
+    const left = parsePercentage(readHotspotFieldValue(item, 'x', 'X'));
+    const top = parsePercentage(readHotspotFieldValue(item, 'y', 'Y'));
+    const width = parsePercentage(readHotspotFieldValue(item, 'width', 'Width'));
+    const height = parsePercentage(readHotspotFieldValue(item, 'height', 'Height'));
     const id = item.id ?? item.name ?? `hotspot-${index}`;
 
     if (left === null || top === null || width === null || height === null) {
       console.warn(
-        `[ImageMap] Skipping hotspot "${id}" — missing or invalid X-pct, Y-pct, Width, or Height.`
+        `[ImageMap] Skipping hotspot "${id}" — missing or invalid x, y, Width, or Height.`
       );
       return;
     }
 
-    const label = String(readHotspotFieldValue(item, 'Label', 'label') ?? '').trim();
-    const linkRaw = (item as Record<string, unknown>).Link ?? (item as Record<string, unknown>).link;
-    const link =
-      linkRaw && typeof linkRaw === 'object' && 'jsonValue' in linkRaw
-        ? (linkRaw as { jsonValue: LinkField }).jsonValue
-        : (linkRaw as LinkField | undefined);
+    const label = String(readHotspotFieldValue(item, 'label', 'Label') ?? '').trim();
+    const link = readHotspotLinkField(item);
 
     resolved.push({
       id,
@@ -172,24 +223,42 @@ function debugLogHotspots(
     console.warn(
       '[ImageMap] No hotspot children in fields.data.datasource.children.results. Check component datasource query.'
     );
+  } else if (!('label' in hotspotItems[0]) && !('Label' in hotspotItems[0])) {
+    console.warn(
+      '[ImageMap] Hotspot items are missing a label/Label field. Add `label` to the ImageMap children datasource query (image-map.props.ts) and rebuild metadata.'
+    );
   }
 
   hotspotItems.forEach((item, index) => {
+    const record = item as Record<string, unknown>;
+    const linkRaw = record.link ?? record.Link;
+    const labelRaw = record.label ?? record.Label;
+    const linkField = readHotspotLinkField(item);
+    const resolvedLink = resolveGeneralLink(linkField);
+    const linkValue = linkRaw && typeof linkRaw === 'object' ? (linkRaw as { value?: unknown }).value : linkRaw;
+
     console.log(`Hotspot #${index + 1}`, {
       id: item.id ?? item.name ?? `hotspot-${index}`,
       name: item.name,
+      itemKeys: Object.keys(record),
+      labelRaw,
+      linkRaw,
+      linkValueType: typeof linkValue,
+      linkValue,
+      linkField,
+      resolvedLink,
       rawFields: {
-        Label: readHotspotFieldValue(item, 'Label', 'label'),
-        'X-pct': readHotspotFieldValue(item, 'X-pct', 'xPct', 'x-pct'),
-        'Y-pct': readHotspotFieldValue(item, 'Y-pct', 'yPct', 'y-pct'),
-        Width: readHotspotFieldValue(item, 'Width', 'width'),
-        Height: readHotspotFieldValue(item, 'Height', 'height'),
+        label: readHotspotFieldValue(item, 'label', 'Label'),
+        x: readHotspotFieldValue(item, 'x', 'X'),
+        y: readHotspotFieldValue(item, 'y', 'Y'),
+        width: readHotspotFieldValue(item, 'width', 'Width'),
+        height: readHotspotFieldValue(item, 'height', 'Height'),
       },
       parsedPercentages: {
-        left: parsePercentage(readHotspotFieldValue(item, 'X-pct', 'xPct', 'x-pct')),
-        top: parsePercentage(readHotspotFieldValue(item, 'Y-pct', 'yPct', 'y-pct')),
-        width: parsePercentage(readHotspotFieldValue(item, 'Width', 'width')),
-        height: parsePercentage(readHotspotFieldValue(item, 'Height', 'height')),
+        left: parsePercentage(readHotspotFieldValue(item, 'x', 'X')),
+        top: parsePercentage(readHotspotFieldValue(item, 'y', 'Y')),
+        width: parsePercentage(readHotspotFieldValue(item, 'width', 'Width')),
+        height: parsePercentage(readHotspotFieldValue(item, 'height', 'Height')),
       },
     });
   });
@@ -203,7 +272,12 @@ function debugLogHotspots(
         top: `${hotspot.top}%`,
         width: `${hotspot.width}%`,
         height: `${hotspot.height}%`,
-        hasLink: Boolean(hotspot.link?.value?.href),
+        hasLink: Boolean(
+          hotspot.link?.value?.href?.trim() ||
+            (hotspot.link?.value as { url?: string } | undefined)?.url?.trim()
+        ),
+        linkJsonValue: hotspot.link,
+        resolvedLink: resolveGeneralLink(hotspot.link),
       }))
     );
   }
@@ -211,16 +285,55 @@ function debugLogHotspots(
   console.groupEnd();
 }
 
+function readHotspotLinkField(item: ImageMapHotspotItemProps): LinkField | undefined {
+  const record = item as Record<string, unknown>;
+  const linkRaw = record.link ?? record.Link;
+  if (!linkRaw || typeof linkRaw !== 'object') return undefined;
+
+  const field = linkRaw as Record<string, unknown>;
+  if ('jsonValue' in field && field.jsonValue && typeof field.jsonValue === 'object') {
+    return normalizeLinkField(field.jsonValue as LinkField);
+  }
+  if ('value' in field) {
+    if (typeof field.value === 'string') {
+      const parsed = parseSitecoreLinkXml(field.value);
+      return parsed ? { value: parsed } : undefined;
+    }
+    if (field.value && typeof field.value === 'object') {
+      return normalizeLinkField(field as unknown as LinkField);
+    }
+  }
+
+  return normalizeLinkField(linkRaw as unknown as LinkField);
+}
+
+function isExternalHref(href: string): boolean {
+  return /^https?:\/\//i.test(href) || href.startsWith('//');
+}
+
 function resolveGeneralLink(linkField: LinkField | undefined): ResolvedLink | null {
   const value = linkField?.value;
-  const href = value?.href?.trim();
+  const href = (value?.href ?? (value as { url?: string } | undefined)?.url)?.trim();
   if (!href || href === 'http://' || href === '#') {
     return null;
   }
+
+  const linktype = (value?.linktype ?? 'internal').toLowerCase();
+  const isExternal =
+    linktype === 'external' || linktype === 'anchor' || linktype === 'mailto' || isExternalHref(href);
+
   return {
     href,
-    linktype: (value?.linktype ?? 'internal').toLowerCase(),
+    linktype,
+    title: String(value?.title ?? '').trim(),
+    text: String(value?.text ?? '').trim(),
+    isExternal,
   };
+}
+
+function getHotspotHelpText(hotspot: ResolvedHotspot, resolved: ResolvedLink | null): string | undefined {
+  const helpText = resolved?.title || resolved?.text || hotspot.label || resolved?.href;
+  return helpText?.trim() || undefined;
 }
 
 function aspectRatioClass(params?: ImageMapParams): string | undefined {
@@ -279,8 +392,9 @@ type HotspotOverlayProps = {
 
 function HotspotOverlay({ hotspot, isEditing }: HotspotOverlayProps): React.ReactElement {
   const style = hotspotPositionStyle(hotspot);
-  const ariaLabel = hotspot.label || 'Hotspot';
   const resolved = resolveGeneralLink(hotspot.link);
+  const helpText = getHotspotHelpText(hotspot, resolved);
+  const ariaLabel = hotspot.label || resolved?.text || helpText || 'Hotspot';
 
   if (isEditing) {
     return (
@@ -288,7 +402,7 @@ function HotspotOverlay({ hotspot, isEditing }: HotspotOverlayProps): React.Reac
         className={cn(hotspotEditingClass, 'text-foreground')}
         style={style}
         aria-label={ariaLabel}
-        title={ariaLabel}
+        title={helpText ?? ariaLabel}
         data-hotspot-id={hotspot.id}
       >
         <span className="line-clamp-3 text-[10px] leading-tight sm:text-xs">
@@ -298,47 +412,36 @@ function HotspotOverlay({ hotspot, isEditing }: HotspotOverlayProps): React.Reac
     );
   }
 
-  const regionClass = resolved ? hotspotHighlightClass : cn(hotspotHighlightClass, 'cursor-default');
+  const sharedProps = {
+    className: resolved ? hotspotHighlightClass : cn(hotspotHighlightClass, 'cursor-default'),
+    style,
+    'aria-label': ariaLabel,
+    title: helpText,
+    'data-hotspot-id': hotspot.id,
+  };
 
   const region = !resolved ? (
-    <div
-      className={regionClass}
-      style={style}
-      aria-label={ariaLabel}
-      title={ariaLabel}
-      data-hotspot-id={hotspot.id}
-    />
-  ) : resolved.linktype === 'internal' ? (
+    <div {...sharedProps} />
+  ) : resolved.isExternal ? (
+    <a href={resolved.href} target="_blank" rel="noopener noreferrer" {...sharedProps} />
+  ) : (
     <NextLink
       href={resolved.href}
       prefetch={false}
-      className={hotspotHighlightClass}
-      style={style}
-      aria-label={ariaLabel}
-      title={ariaLabel}
-      data-hotspot-id={hotspot.id}
-    />
-  ) : (
-    <a
-      href={resolved.href}
       target="_blank"
       rel="noopener noreferrer"
-      className={hotspotHighlightClass}
-      style={style}
-      aria-label={ariaLabel}
-      title={ariaLabel}
-      data-hotspot-id={hotspot.id}
+      {...sharedProps}
     />
   );
 
-  if (!hotspot.label) {
+  if (!helpText) {
     return region;
   }
 
   return (
     <Tooltip>
       <TooltipTrigger asChild>{region}</TooltipTrigger>
-      <TooltipContent side="top">{hotspot.label}</TooltipContent>
+      <TooltipContent side="top">{helpText}</TooltipContent>
     </Tooltip>
   );
 }
